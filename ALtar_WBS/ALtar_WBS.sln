@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALtar_WBS", "ALtar_WBS\ALtar_WBS.csproj", "{C1B02DC8-84F5-4728-936D-2BCFABD4CAD4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1B02DC8-84F5-4728-936D-2BCFABD4CAD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1B02DC8-84F5-4728-936D-2BCFABD4CAD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1B02DC8-84F5-4728-936D-2BCFABD4CAD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1B02DC8-84F5-4728-936D-2BCFABD4CAD4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91226221-2C0D-4389-B354-47CC5FC0A186}
+	EndGlobalSection
+EndGlobal
