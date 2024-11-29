@@ -3,177 +3,247 @@ using ALtar_WBS.Dto;
 using ALtar_WBS.Interface;
 using ALtar_WBS.Model;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Tls;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace ALtar_WBS.Service
 {
-	public class ServiceStudent : InterfaceStudent
-	{
-		private readonly ApplicationDbContext _context;
-		private readonly IHttpContextAccessor _httpContextAccessor;
-		private readonly string _imageDirectory = "wwwroot/images/students";
+    public class ServiceStudent : InterfaceStudent
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly string _imageDirectory = "wwwroot/images/students";
 
-		public ServiceStudent(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
-		{
-			_context = context;
-			_httpContextAccessor = httpContextAccessor;
-		}
+        public ServiceStudent(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        {
+            _context = context;
+            _httpContextAccessor = httpContextAccessor;
+        }
+        public async Task<Student> AddStudent(StudentDto studentDto, IFormFile profileImage)
+        {
+            try
+            {
+                var user = GetUserInfoFromToken(); 
 
-		// Thêm sinh viên
-		public async Task<Student> AddStudent(StudentDto studentDto, IFormFile profileImage)
-		{
-			var user = GetUserInfoFromToken();  // Lấy thông tin người dùng từ token
+                if (user.UserID <= 0)
+                {
+                    throw new InvalidOperationException("User ID is invalid or not provided.");
+                }
+                var userRole = await _context.roles.FindAsync(user.RoleID);
+                if(userRole.RoleName != "Student")
+                {
+                    throw new InvalidOperationException("User does not have the required 'Student' role");
+                }
 
-			if (user.UserID <= 0)
-			{
-				throw new ArgumentException("User ID is invalid or not provided.");
-			}
-			var profileImagePath = profileImage != null ? await SaveImage(profileImage) : null;
+                var profileImagePath = profileImage != null ? await SaveImage(profileImage) : null;
 
-			var newStudent = new Student
-			{
-				DateOfBirth = studentDto.DateOfBirth,
-				Address = studentDto.Address,
-				ParentPhone = studentDto.ParentPhone,
-				ProfileImage = profileImagePath,
-				UserID = user.UserID,
-			};
+                var newStudent = new Student
+                {
+                    DateOfBirth = studentDto.DateOfBirth,
+                    Address = studentDto.Address,
+                    ParentPhone = studentDto.ParentPhone,
+                    ProfileImage = profileImagePath,
+                    UserID = user.UserID,
+                };
 
-			_context.students.Add(newStudent);
-			await _context.SaveChangesAsync();
-			return newStudent;
-		}
+                _context.students.Add(newStudent);
+                await _context.SaveChangesAsync();
 
-		// Xóa sinh viên
-		public async Task<bool> DeleteStudent(int studentId)
-		{
-			var student = await _context.students.FindAsync(studentId);
+                return newStudent;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error adding student: " + ex.Message);
+            }
+        }
 
-			if (student == null) return false;
+        public async Task<bool> DeleteStudent(int studentId)
+        {
+            try
+            {
+                var student = await _context.students.FindAsync(studentId);
 
-			if (!string.IsNullOrEmpty(student.ProfileImage))
-			{
-				DeleteImage(student.ProfileImage);
-			}
+                if (student == null)
+                {
+                    throw new InvalidOperationException("Student not found.");
+                }
 
-			_context.students.Remove(student);
-			await _context.SaveChangesAsync();
-			return true;
-		}
+                if (!string.IsNullOrEmpty(student.ProfileImage))
+                {
+                    DeleteImage(student.ProfileImage);
+                }
 
-		// Lấy danh sách tất cả sinh viên
-		public async Task<IEnumerable<Student>> GetAllStudents()
-		{
-			return await _context.students.ToListAsync();
-		}
+                _context.students.Remove(student);
+                await _context.SaveChangesAsync();
 
-		// Lấy thông tin sinh viên theo ID
-		public async Task<Student> GetStudentById(int studentId)
-		{
-			return await _context.students.FindAsync(studentId);
-		}
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error deleting student: " + ex.Message);
+            }
+        }
 
-		// Kiểm tra sinh viên có tồn tại không
-		public async Task<bool> StudentExists(int studentId)
-		{
-			return await _context.students.AnyAsync(s => s.UserID == studentId);
-		}
+        public async Task<IEnumerable<Student>> GetAllStudents()
+        {
+            try
+            {
+                var allStudents = await _context.students.ToListAsync();
+                if (allStudents == null || !allStudents.Any())
+                {
+                    throw new InvalidOperationException("No students found.");
+                }
+                return allStudents;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error retrieving students: " + ex.Message);
+            }
+        }
 
-		// Cập nhật thông tin sinh viên
-		public async Task<Student> UpdateStudent(int studentId, StudentDto studentDto, IFormFile profileImage)
-		{
-			// Tìm sinh viên theo ID
-			var existingStudent = await _context.students.FindAsync(studentId);
+        public async Task<Student> GetStudentById(int studentId)
+        {
+            try
+            {
+                var student = await _context.students.FindAsync(studentId);
 
-			if (existingStudent == null)
-			{
-				throw new ArgumentException("Student not found.");
-			}
+                if (student == null)
+                {
+                    throw new InvalidOperationException("Student not found.");
+                }
 
-			// Cập nhật thông tin cơ bản
-			existingStudent.DateOfBirth = studentDto.DateOfBirth;
-			existingStudent.Address = studentDto.Address;
-			existingStudent.ParentPhone = studentDto.ParentPhone;
+                return student;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error retrieving student by ID: " + ex.Message);
+            }
+        }
 
-			// Nếu có ảnh mới, xử lý cập nhật ảnh
-			if (profileImage != null)
-			{
-				// Xóa ảnh cũ nếu tồn tại
-				if (!string.IsNullOrEmpty(existingStudent.ProfileImage))
-				{
-					DeleteImage(existingStudent.ProfileImage);
-				}
+        public async Task<bool> StudentExists(int studentId)
+        {
+            try
+            {
+                return await _context.students.AnyAsync(s => s.UserID == studentId);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error checking if student exists: " + ex.Message);
+            }
+        }
 
-				// Lưu ảnh mới và cập nhật đường dẫn ảnh
-				existingStudent.ProfileImage = await SaveImage(profileImage);
-			}
+        public async Task<Student> UpdateStudent(int studentId, StudentDto studentDto, IFormFile profileImage)
+        {
+            try
+            {
+                var existingStudent = await _context.students.FindAsync(studentId);
 
-			// Lưu thay đổi vào cơ sở dữ liệu
-			await _context.SaveChangesAsync();
-			return existingStudent;
-		}
+                if (existingStudent == null)
+                {
+                    throw new InvalidOperationException("Student not found.");
+                }
 
+                existingStudent.DateOfBirth = studentDto.DateOfBirth;
+                existingStudent.Address = studentDto.Address;
+                existingStudent.ParentPhone = studentDto.ParentPhone;
 
-		// Lưu ảnh vào thư mục
-		private async Task<string> SaveImage(IFormFile imageFile)
-		{
-			if (!Directory.Exists(_imageDirectory))
-			{
-				Directory.CreateDirectory(_imageDirectory);
-			}
+                if (profileImage != null)
+                {
+                    if (!string.IsNullOrEmpty(existingStudent.ProfileImage))
+                    {
+                        DeleteImage(existingStudent.ProfileImage);
+                    }
+                    existingStudent.ProfileImage = await SaveImage(profileImage);
+                }
 
-			var fileName = $"{Guid.NewGuid()}_{imageFile.FileName}";
-			var filePath = Path.Combine(_imageDirectory, fileName);
+                await _context.SaveChangesAsync();
 
-			using (var stream = new FileStream(filePath, FileMode.Create))
-			{
-				await imageFile.CopyToAsync(stream);
-			}
+                return existingStudent;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error updating student: " + ex.Message);
+            }
+        }
 
-			return filePath;
-		}
+        private async Task<string> SaveImage(IFormFile imageFile)
+        {
+            try
+            {
+                if (!Directory.Exists(_imageDirectory))
+                {
+                    Directory.CreateDirectory(_imageDirectory);
+                }
 
-		// Xóa ảnh
-		private void DeleteImage(string imagePath)
-		{
-			if (File.Exists(imagePath))
-			{
-				File.Delete(imagePath);
-			}
-		}
+                var fileName = $"{Guid.NewGuid()}_{imageFile.FileName}";
+                var filePath = Path.Combine(_imageDirectory, fileName);
 
-		// Lấy thông tin người dùng từ token
-		public User GetUserInfoFromToken()
-		{
-			var token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
 
-			if (string.IsNullOrEmpty(token))
-			{
-				throw new ArgumentException("Token is missing or invalid.");
-			}
+                return filePath;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error saving image: " + ex.Message);
+            }
+        }
 
-			var handler = new JwtSecurityTokenHandler();
-			var jwtToken = handler.ReadJwtToken(token);
+        private void DeleteImage(string imagePath)
+        {
+            try
+            {
+                if (File.Exists(imagePath))
+                {
+                    File.Delete(imagePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error deleting image: " + ex.Message);
+            }
+        }
+        public User GetUserInfoFromToken()
+        {
+            var token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-			var userName = jwtToken?.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
-			var fullName = jwtToken?.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
-			var email = jwtToken?.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
-			var roleName = jwtToken?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-			var userID = jwtToken?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new ArgumentException("Token is missing or invalid.");
+            }
 
-			if (userID == null)
-			{
-				throw new ArgumentException("UserID is not found in the token.");
-			}
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
 
-			return new User
-			{
-				UserName = userName,
-				FullName = fullName,
-				Email = email,
-				UserID = int.Parse(userID)
-			};
-		}
-	}
+            if (jwtToken == null)
+            {
+                throw new ArgumentException("Invalid JWT token.");
+            }
+
+            var userName = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+            var fullName = jwtToken.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+            var email = jwtToken.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
+            var roleID = jwtToken.Claims.FirstOrDefault(c => c.Type == "RoleID")?.Value;
+            var userID = jwtToken.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
+
+            if (string.IsNullOrEmpty(userID) || string.IsNullOrEmpty(roleID))
+            {
+                throw new ArgumentException("Required claims (UserID or RoleID) are missing from the token.");
+            }
+
+            var user = new User
+            {
+                UserName = userName,
+                FullName = fullName,
+                Email = email,
+                UserID = int.Parse(userID),
+                RoleID = int.Parse(roleID) 
+            };
+
+            return user;
+        }
+    }
 }

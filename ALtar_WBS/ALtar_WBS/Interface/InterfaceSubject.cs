@@ -1,11 +1,12 @@
-﻿using ALtar_WBS.Model;
+﻿using ALtar_WBS.Dto;
+using ALtar_WBS.Model;
 
 namespace ALtar_WBS.Interface
 {
 	public interface InterfaceSubject
 	{
-		public Task<Subjects> AddSubjectAsync(Subjects subject); // Thêm môn học
-		public Task<Subjects> UpdateSubjectAsync(int subjectId, Subjects subject); // Cập nhật môn học
+		public Task<Subjects> AddSubjectAsync(SubjectDto subject); // Thêm môn học
+		public Task<Subjects> UpdateSubjectAsync(int subjectId, SubjectDto subject); // Cập nhật môn học
 		public Task<bool> DeleteSubjectAsync(int subjectId); // Xóa môn học
 		public Task<IEnumerable<Subjects>> GetAllSubjectsAsync(); // Lấy danh sách môn học
 		public Task<Subjects> GetSubjectByIdAsync(int subjectId); // Lấy môn học theo ID

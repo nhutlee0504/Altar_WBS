@@ -13,5 +13,9 @@ namespace ALtar_WBS.Model
 		public string Address { get; set; }
 		public string ParentPhone { get; set; }
 		public string ProfileImage { get; set; }
+		public ICollection<Payment> payments { get; set; }
+		public ICollection<Enrollment> Enrollments { get; set; }
+		public ICollection<Attendance> Attendances { get; set; }
+		public ICollection<Grade> Grades { get; set; }
 	}
 }

@@ -2,7 +2,6 @@
 {
 	public class TeacherSalaryDto
 	{
-		public int SalaryID { get; set; }
 		public decimal amount { get; set; }
 		public DateTime PaymentDate { get; set; }
 		public string PaymentType { get; set; }

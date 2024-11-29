@@ -19,20 +19,8 @@ namespace ALtar_WBS.Controllers
             _authService = authService;
         }
 
-        [HttpPost("register-admin")]
-        public async Task<IActionResult> RegisterAdmin([FromBody] UserDto user)
-        {
-            // Gọi hàm CreateAdmin từ ServiceAuth để tạo tài khoản Admin
-            var result = await _authService.CreateAdmin(user);
-            if (result != null)
-            {
-                return Ok(new { message = "Admin account created successfully." });
-            }
-            return BadRequest(new { message = "Failed to create admin account." });
-        }
-
         [HttpPost("login-admin")]
-        public async Task<IActionResult> LoginAdmin([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> LoginAdmin([FromForm] LoginDto loginDto)
         {
             var token = await _authService.LoginAdmin(loginDto);
             if (token != null)
@@ -44,7 +32,7 @@ namespace ALtar_WBS.Controllers
 
 
         [HttpPost("login-user")]
-        public async Task<IActionResult> LoginUser([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> LoginUser([FromForm] LoginDto loginDto)
         {
             var token = await _authService.LoginUser(loginDto);
             if (token != null)

@@ -79,6 +79,18 @@ builder.Services.AddScoped<InterfaceTeacher, ServiceTeacher>();
 builder.Services.AddScoped<InterfaceStudent, ServiceStudent>();
 builder.Services.AddScoped<ISubjectCategory, SubjectCategoryService>();
 builder.Services.AddScoped<InterfaceSubject, ServiceSubject>();
+builder.Services.AddScoped<InterfaceCourse, ServiceCourse>();
+builder.Services.AddScoped<InterfaceTeacherSalary, ServiceTeacherSalary>();
+builder.Services.AddScoped<InterfaceCourseSubject, ServiceCourseSubject>();
+builder.Services.AddScoped<InterfacePayment, ServicePayment>();
+builder.Services.AddScoped<InterfaceSchedule, ServiceSchedule>();
+builder.Services.AddScoped<InterfaceClasses, ServiceClasses>();
+builder.Services.AddScoped<InterfaceClassTeacher, ServiceClassTeacher>();
+builder.Services.AddScoped<InterfaceAttendance, AttendanceService>();
+builder.Services.AddScoped<InterfaceGrade, ServiceGrade>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+builder.Services.AddScoped<InterfaceEnrollment, ServiceEnrollment>();
+
 
 var app = builder.Build();
 
@@ -90,6 +102,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection(); // Thêm nếu bạn muốn sử dụng HTTPS
 app.UseAuthentication(); // Đảm bảo dùng trước app.UseAuthorization()
+app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();

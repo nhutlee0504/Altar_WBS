@@ -19,87 +19,154 @@ namespace ALtar_WBS.Controllers
 
         // Thêm một người dùng mới
         [HttpPost("add")]
-        public async Task<IActionResult> AddUser([FromBody] UserDto userDto)
+        public async Task<IActionResult> AddUser([FromForm] UserDto userDto)
         {
-            var user = await _userService.AddUser(userDto);
-            return CreatedAtAction(nameof(GetUserById), new { userId = user.UserID }, user);
-        }
-
-        // Thêm nhiều người dùng cùng lúc
-        [HttpPost("add-multiple")]
-        public async Task<IActionResult> AddUsers([FromBody] List<UserDto> userDtos)
-        {
-            var users = await _userService.AddUsers(userDtos);
-            return Ok(users);
+            try
+            {
+                var user = await _userService.AddUser(userDto);
+                return Ok(user);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+            }
         }
 
         // Lấy danh sách tất cả người dùng
         [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
-            var users = await _userService.GetAllUsers();
-            return Ok(users);
+            try
+            {
+                var users = await _userService.GetAllUsers();
+                return Ok(users);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+            }
         }
 
         // Lấy thông tin người dùng theo ID
         [HttpGet("{userId}")]
         public async Task<ActionResult<User>> GetUserById(int userId)
         {
-            var user = await _userService.GetUserById(userId);
-            if (user == null) return NotFound();
-            return Ok(user);
+            try
+            {
+                var user = await _userService.GetUserById(userId);
+                return Ok(user);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+            }
         }
 
         // Khóa tài khoản người dùng
         [HttpPatch("lock/{userId}")]
         public async Task<IActionResult> LockUserAccount(int userId)
         {
-            var success = await _userService.LockUserAccount(userId);
-            if (!success) return NotFound("User not found.");
-            return Ok("User account locked.");
+            try
+            {
+                var success = await _userService.LockUserAccount(userId);
+                return Ok(success);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+            }
         }
 
         // Mở khóa tài khoản người dùng
         [HttpPatch("unlock/{userId}")]
         public async Task<IActionResult> UnlockUserAccount(int userId)
         {
-            var success = await _userService.UnlockUserAccount(userId);
-            if (!success) return NotFound("User not found.");
-            return Ok("User account unlocked.");
+            try
+            {
+                var success = await _userService.UnlockUserAccount(userId);
+                return Ok(success);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+            }
         }
 
         // Cài đặt lại mật khẩu người dùng
         [HttpPatch("reset-password/{userId}")]
-        public async Task<IActionResult> ResetPassword(int userId, [FromBody] string newPassword)
+        public async Task<IActionResult> ResetPassword(int userId, string newPassword)
         {
-            var success = await _userService.ResetPassword(userId, newPassword);
-            if (!success) return NotFound("User not found.");
-            return Ok("Password reset successful.");
+            try
+            {
+                var success = await _userService.ResetPassword(userId, newPassword);
+                return Ok(success);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+            }
         }
 
         // Tìm kiếm người dùng theo từ khóa
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<User>>> SearchUsers([FromQuery] string keyword)
+        public async Task<ActionResult<IEnumerable<User>>> SearchUsers(string keyword)
         {
-            var users = await _userService.SearchUsers(keyword);
-            return Ok(users);
+            try
+            {
+                var users = await _userService.SearchUsers(keyword);
+                return Ok(users);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+            }
         }
 
         // Cập nhật thông tin người dùng
         [HttpPut("update/{userId}")]
-        public async Task<IActionResult> UpdateUser(int userId, [FromBody] UserDto userDto)
+        public async Task<IActionResult> UpdateUser(int userId, [FromForm] UserDto userDto)
         {
-            var user = await _userService.UpdateUser(userId, userDto);
-            if (user == null) return NotFound("User not found.");
-            return Ok(user);
-        }
-
-        // Kiểm tra xem người dùng có tồn tại không
-        [HttpGet("exists/{userId}")]
-        public async Task<IActionResult> UserExists(int userId)
-        {
-            var exists = await _userService.UserExists(userId);
-            return Ok(exists);
+            try
+            {
+                var user = await _userService.UpdateUser(userId, userDto);
+                return Ok(user);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+            }
         }
     }
 }

@@ -22,9 +22,6 @@ namespace ALtar_WBS.Interface
         // Sao chép nhóm quyền (sao chép các quyền đã tồn tại)
         public Task<Role> CopyRole(int roleId);
 
-        // Kiểm tra xem một vai trò có tồn tại hay không
-        public Task<bool> RoleExists(int roleId);
-
         // Phân quyền cho người dùng
         public Task<bool> AssignRoleToUser(int userId, int roleId);
     }

@@ -3,130 +3,149 @@ using ALtar_WBS.Dto;
 using ALtar_WBS.Interface;
 using ALtar_WBS.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace ALtar_WBS.Service
 {
-    public class ServiceUser : InterfaceUser
-    {
-        private readonly ApplicationDbContext _context;
+	public class ServiceUser : InterfaceUser
+	{
+		private readonly ApplicationDbContext _context;
+		private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ServiceUser(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public ServiceUser(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+		{
+			_context = context;
+			_httpContextAccessor = httpContextAccessor;
+		}
 
-        // Thêm một người dùng mới
-        public async Task<User> AddUser(UserDto userDto)
-        {
-            var hashPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
-            var user = new User
-            {
-                UserName = userDto.UserName,
-                Email = userDto.Email,
-                Password = hashPassword,
-                RoleID = userDto.RoleId,
-                Phone = userDto.Phone,
-                Address = userDto.Address,
-                Status = "Active"
-            };
+		public async Task<User> AddUser(UserDto userDto)
+		{
+			var emailRegex = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+			if (!Regex.IsMatch(userDto.Email, emailRegex))
+			{
+				throw new InvalidOperationException("Invalid email format.");
+			}
 
-            _context.users.Add(user);
-            await _context.SaveChangesAsync();
-            return user;
-        }
+			var passwordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$";
+			if (!Regex.IsMatch(userDto.Password, passwordRegex))
+			{
+				throw new InvalidOperationException("Password must be at least 8 characters long and contain a mix of upper and lower case letters, and numbers.");
+			}
 
-        // Thêm nhiều người dùng cùng lúc
-        public async Task<IEnumerable<User>> AddUsers(List<UserDto> userDtos)
-        {
-            var users = userDtos.Select(dto => new User
-            {
-                UserName = dto.UserName,
-                Email = dto.Email,
-                FullName = dto.FullName,
-                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                RoleID = dto.RoleId,
-                Phone = dto.Phone,
-                Address = dto.Address,
-                Status = "Active"
-            }).ToList();
+			var phoneRegex = @"^0\d{9}$";
+			if (!Regex.IsMatch(userDto.Phone, phoneRegex))
+			{
+				throw new InvalidOperationException("Phone number must be 10 digits and start with 0.");
+			}
 
-            _context.users.AddRange(users);
-            await _context.SaveChangesAsync();
-            return users;
-        }
+			var hashPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
+			var user = new User
+			{
+				UserName = userDto.UserName,
+				FullName = userDto.FullName,
+				Email = userDto.Email,
+				Password = hashPassword,
+				RoleID = (int)userDto.RoleId,
+				Phone = userDto.Phone,
+				Address = userDto.Address,
+				IsActive = true
+			};
 
-        // Lấy danh sách tất cả người dùng
-        public async Task<IEnumerable<User>> GetAllUsers()
-        {
-            return await _context.users.ToListAsync();
-        }
+			_context.users.Add(user);
+			await _context.SaveChangesAsync();
 
-        // Lấy thông tin người dùng theo ID
-        public async Task<User> GetUserById(int userId)
-        {
-            return await _context.users.FindAsync(userId);
-        }
+			return user;
+		}
 
-        // Khóa tài khoản người dùng
-        public async Task<bool> LockUserAccount(int userId)
-        {
-            var user = await _context.users.FindAsync(userId);
-            if (user == null) return false;
+		public async Task<IEnumerable<User>> GetAllUsers()
+		{
+			var allUsers = await _context.users.ToListAsync();
+			if (allUsers.Count == null)
+			{
+				throw new InvalidOperationException("Users not found");
+			}
+			return allUsers;
+		}
 
-            user.Status = "Locked";
-            await _context.SaveChangesAsync();
-            return true;
-        }
+		public async Task<User> GetUserById(int userId)
+		{
+			var userFind = await _context.users.FindAsync(userId);
+			if (userFind == null)
+			{
+				throw new InvalidOperationException("User with userID not found");
+			}
+			return userFind;
+		}
 
-        // Mở khóa tài khoản người dùng
-        public async Task<bool> UnlockUserAccount(int userId)
-        {
-            var user = await _context.users.FindAsync(userId);
-            if (user == null) return false;
+		public async Task<bool> LockUserAccount(int userId)
+		{
+			var user = await _context.users.FindAsync(userId);
+			if (user == null) return false;
 
-            user.Status = "Active";
-            await _context.SaveChangesAsync();
-            return true;
-        }
+			user.IsActive = false;
+			await _context.SaveChangesAsync();
+			return true;
+		}
 
-        // Cài đặt lại mật khẩu người dùng
-        public async Task<bool> ResetPassword(int userId, string newPassword)
-        {
-            var user = await _context.users.FindAsync(userId);
-            if (user == null) return false;
+		public async Task<bool> UnlockUserAccount(int userId)
+		{
+			var user = await _context.users.FindAsync(userId);
+			if (user == null) return false;
 
-            user.Password = newPassword;
-            await _context.SaveChangesAsync();
-            return true;
-        }
+			user.IsActive = false;
+			await _context.SaveChangesAsync();
+			return true;
+		}
 
-        // Tìm kiếm người dùng theo từ khóa
-        public async Task<IEnumerable<User>> SearchUsers(string keyword)
-        {
-            return await _context.users
-                .Where(u => u.UserName.Contains(keyword) || u.Email.Contains(keyword))
-                .ToListAsync();
-        }
+		public async Task<bool> ResetPassword(int userId, string newPassword)
+		{
+			var user = await _context.users.FindAsync(userId);
+			if (user == null) return false;
 
-        // Cập nhật thông tin người dùng
-        public async Task<User> UpdateUser(int userId, UserDto userDto)
-        {
-            var user = await _context.users.FindAsync(userId);
-            if (user == null) return null;
+			user.Password = newPassword;
+			await _context.SaveChangesAsync();
+			return true;
+		}
 
-            user.Email = userDto.Email;
-            user.Address = userDto.Address;
-            user.Phone = userDto.Phone;
-            user.FullName = userDto.FullName;
+		public async Task<IEnumerable<User>> SearchUsers(string keyword)
+		{
+			var userFind = await _context.users
+				.Where(u => u.UserName.Contains(keyword) || u.Email.Contains(keyword))
+				.ToListAsync();
+			if (userFind == null)
+			{
+				throw new InvalidOperationException("Not found user with keyword");
+			}
+			return userFind;
+		}
 
-            await _context.SaveChangesAsync();
-            return user;
-        }
+		public async Task<User> UpdateUser(int userId, UserDto userDto)
+		{
+			var user = await _context.users.FindAsync(userId);
+			if (user == null)
+			{
+				throw new InvalidOperationException("User not found.");
+			}
 
-        // Kiểm tra xem người dùng có tồn tại không
-        public async Task<bool> UserExists(int userId)
-        {
-            return await _context.users.AnyAsync(u => u.UserID == userId);
-        }
-    }
+			var emailRegex = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+			if (!Regex.IsMatch(userDto.Email, emailRegex))
+			{
+				throw new InvalidOperationException("Invalid email format.");
+			}
+
+			var phoneRegex = @"^0\d{9}$";
+			if (!Regex.IsMatch(userDto.Phone, phoneRegex))
+			{
+				throw new InvalidOperationException("Phone number must be 10 digits and start with 0.");
+			}
+
+			user.Email = userDto.Email;
+			user.Address = userDto.Address;
+			user.Phone = userDto.Phone;
+			user.FullName = userDto.FullName;
+
+			await _context.SaveChangesAsync();
+			return user;
+		}
+	}
 }

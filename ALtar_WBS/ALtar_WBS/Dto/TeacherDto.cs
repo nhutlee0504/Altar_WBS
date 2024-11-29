@@ -6,5 +6,6 @@
         public string IdCard { get; set; }
         public string Address { get; set; }
         public string Phone {  get; set; }
+        public string Subject { get; set; }
     }
 }

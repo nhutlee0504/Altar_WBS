@@ -12,5 +12,6 @@ namespace ALtar_WBS.Model
 		public string Level {  get; set; }
 		public int CategoryID { get; set; }
 		public SubjectCategories SubjectCategories { get; set; }
+		public ICollection<CourseSubject> CourseSubjects { get; set; }
 	}
 }

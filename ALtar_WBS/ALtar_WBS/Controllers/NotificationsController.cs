@@ -1,6 +1,8 @@
 ﻿using ALtar_WBS.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace ALtar_WBS.Controllers
 {
@@ -15,100 +17,166 @@ namespace ALtar_WBS.Controllers
             _notificationService = notificationService;
         }
 
-        // Tạo thông báo mới
         [HttpPost("create")]
-        public async Task<IActionResult> CreateNotification([FromBody] string message, [FromQuery] string type)
+        public async Task<IActionResult> CreateNotification(string message, string type)
         {
-            if (string.IsNullOrWhiteSpace(message) || string.IsNullOrWhiteSpace(type))
+            try
             {
-                return BadRequest("Thông báo và loại không được để trống.");
-            }
+                if (string.IsNullOrWhiteSpace(message) || string.IsNullOrWhiteSpace(type))
+                {
+                    return BadRequest("Message and type cannot be empty");
+                }
 
-            var notification = await _notificationService.CreateNotification(message, type);
-            if (notification == null)
+                var notification = await _notificationService.CreateNotification(message, type);
+                return Ok(notification);
+            }
+            catch (InvalidOperationException ex)
             {
-                return StatusCode(500, "Không thể tạo thông báo.");
+                return StatusCode(500, ex.Message);
             }
-
-            return Ok(notification);
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
-        // Xóa thông báo
         [HttpDelete("delete/{notificationId}")]
         public async Task<IActionResult> DeleteNotification(int notificationId)
         {
-            var isDeleted = await _notificationService.DeleteNotification(notificationId);
-            if (!isDeleted)
+            try
             {
-                return NotFound($"Thông báo với ID {notificationId} không tồn tại.");
-            }
+                var isDeleted = await _notificationService.DeleteNotification(notificationId);
+                if (!isDeleted)
+                {
+                    return NotFound($"Notification with ID {notificationId} not found");
+                }
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
-        // Lấy tất cả thông báo
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAllNotifications()
         {
-            var notifications = await _notificationService.GetAllNotifications();
-            return Ok(notifications);
+            try
+            {
+                var notifications = await _notificationService.GetAllNotifications();
+                return Ok(notifications);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
-        // Lấy thông báo theo ID
         [HttpGet("{notificationId}")]
         public async Task<IActionResult> GetNotificationById(int notificationId)
         {
-            var notification = await _notificationService.GetNotificationById(notificationId);
-            if (notification == null)
+            try
             {
-                return NotFound($"Thông báo với ID {notificationId} không tồn tại.");
-            }
+                var notification = await _notificationService.GetNotificationById(notificationId);
+                if (notification == null)
+                {
+                    return NotFound($"Notification with ID {notificationId} not found");
+                }
 
-            return Ok(notification);
+                return Ok(notification);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
-        // Lấy tất cả thông báo của người dùng
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserNotifications(int userId)
         {
-            var notifications = await _notificationService.GetUserNotifications(userId);
-            if (notifications == null)
+            try
             {
-                return NotFound($"Không có thông báo nào cho người dùng với ID {userId}.");
-            }
+                var notifications = await _notificationService.GetUserNotifications(userId);
+                if (notifications == null)
+                {
+                    return NotFound($"No notifications found for user with ID {userId}");
+                }
 
-            return Ok(notifications);
+                return Ok(notifications); 
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(500, ex.Message); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message); 
+            }
         }
 
-        // Gửi thông báo qua email
+
         [HttpPost("sendEmail/{userId}")]
-        public async Task<IActionResult> SendEmailNotification(int userId, [FromBody] string message)
+        public async Task<IActionResult> SendEmailNotification(int userId, string message)
         {
-            if (string.IsNullOrEmpty(message))
+            try
             {
-                return BadRequest("Nội dung thông báo không được để trống.");
-            }
+                if (string.IsNullOrEmpty(message))
+                {
+                    return BadRequest("Message content cannot be empty");
+                }
 
-            var result = await _notificationService.SendEmailNotification(userId, message);
-            if (!result)
+                var result = await _notificationService.SendEmailNotification(userId, message);
+                if (!result)
+                {
+                    return StatusCode(500, "Failed to send email");
+                }
+
+                return Ok("Email sent successfully"); 
+            }
+            catch (InvalidOperationException ex)
             {
-                return StatusCode(500, "Gửi email thất bại.");
+                return StatusCode(500, ex.Message);
             }
-
-            return Ok("Email đã được gửi thành công.");
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message); 
+            }
         }
 
-        // Gửi thông báo tới người dùng và gửi email
         [HttpPost("sendToUser/{userId}/{notificationId}")]
         public async Task<IActionResult> SendNotificationToUser(int userId, int notificationId)
         {
-            var result = await _notificationService.SendNotificationToUser(userId, notificationId);
-            if (!result)
+            try
             {
-                return StatusCode(500, "Gửi thông báo đến người dùng thất bại.");
-            }
+                var result = await _notificationService.SendNotificationToUser(userId, notificationId);
+                if (!result)
+                {
+                    return StatusCode(500, "Failed to send notification to user");
+                }
 
-            return Ok("Thông báo đã được gửi thành công và email đã được gửi.");
+                return Ok("Notification sent successfully and email was sent"); 
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(500, ex.Message); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message); 
+            }
         }
     }
 }

@@ -22,6 +22,195 @@ namespace ALtar_WBS.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("ALtar_WBS.Model.Attendance", b =>
+                {
+                    b.Property<int>("AttendanceID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AttendanceID"), 1L, 1);
+
+                    b.Property<DateTime?>("AttendanceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ClassID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
+
+                    b.HasKey("AttendanceID");
+
+                    b.HasIndex("ClassID");
+
+                    b.HasIndex("StudentID");
+
+                    b.ToTable("attendances");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.Classes", b =>
+                {
+                    b.Property<int>("ClassID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassID"), 1L, 1);
+
+                    b.Property<int>("CourseID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClassID");
+
+                    b.HasIndex("CourseID");
+
+                    b.ToTable("classes");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.ClassTeachers", b =>
+                {
+                    b.Property<int>("ctID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ctID"), 1L, 1);
+
+                    b.Property<int>("ClassID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeacherID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ctID");
+
+                    b.HasIndex("ClassID");
+
+                    b.HasIndex("TeacherID");
+
+                    b.ToTable("classTeachers");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.Course", b =>
+                {
+                    b.Property<int>("CourseID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseID"), 1L, 1);
+
+                    b.Property<string>("CourseName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Fee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("CourseID");
+
+                    b.ToTable("courses");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.CourseSubject", b =>
+                {
+                    b.Property<int>("csID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("csID"), 1L, 1);
+
+                    b.Property<int>("CourseID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubjectID")
+                        .HasColumnType("int");
+
+                    b.HasKey("csID");
+
+                    b.HasIndex("CourseID");
+
+                    b.HasIndex("SubjectID");
+
+                    b.ToTable("courseSubjects");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.Enrollment", b =>
+                {
+                    b.Property<int>("EnrollmentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentID"), 1L, 1);
+
+                    b.Property<int>("ClassID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ErollmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EnrollmentID");
+
+                    b.HasIndex("ClassID");
+
+                    b.HasIndex("StudentID");
+
+                    b.ToTable("enrollments");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.Grade", b =>
+                {
+                    b.Property<int>("GradeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GradeID"), 1L, 1);
+
+                    b.Property<int>("CourseID")
+                        .HasColumnType("int");
+
+                    b.Property<float>("GradeValue")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Remarks")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
+
+                    b.HasKey("GradeID");
+
+                    b.HasIndex("CourseID");
+
+                    b.HasIndex("StudentID");
+
+                    b.ToTable("grades");
+                });
+
             modelBuilder.Entity("ALtar_WBS.Model.Notifications", b =>
                 {
                     b.Property<int>("NotificationId")
@@ -46,6 +235,59 @@ namespace ALtar_WBS.Migrations
                     b.ToTable("notifications");
                 });
 
+            modelBuilder.Entity("ALtar_WBS.Model.Payment", b =>
+                {
+                    b.Property<int>("PaymentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"), 1L, 1);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
+
+                    b.HasKey("PaymentID");
+
+                    b.HasIndex("StudentID");
+
+                    b.ToTable("payments");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.Report", b =>
+                {
+                    b.Property<int>("ReportID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReportID"), 1L, 1);
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ReportID");
+
+                    b.ToTable("reports");
+                });
+
             modelBuilder.Entity("ALtar_WBS.Model.Role", b =>
                 {
                     b.Property<int>("RoleID")
@@ -61,6 +303,40 @@ namespace ALtar_WBS.Migrations
                     b.HasKey("RoleID");
 
                     b.ToTable("roles");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.Schedule", b =>
+                {
+                    b.Property<int>("ScheduleID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleID"), 1L, 1);
+
+                    b.Property<int>("ClassID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DayOfWeek")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EndTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Room")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StartTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ScheduleID");
+
+                    b.HasIndex("ClassID");
+
+                    b.ToTable("schedules");
                 });
 
             modelBuilder.Entity("ALtar_WBS.Model.Student", b =>
@@ -158,6 +434,10 @@ namespace ALtar_WBS.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UserID");
 
                     b.ToTable("teachers");
@@ -212,6 +492,9 @@ namespace ALtar_WBS.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
@@ -220,9 +503,6 @@ namespace ALtar_WBS.Migrations
 
                     b.Property<int>("RoleID")
                         .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
@@ -255,6 +535,134 @@ namespace ALtar_WBS.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("userNotifications");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.Attendance", b =>
+                {
+                    b.HasOne("ALtar_WBS.Model.Classes", "Classes")
+                        .WithMany("Attendances")
+                        .HasForeignKey("ClassID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ALtar_WBS.Model.Student", "Student")
+                        .WithMany("Attendances")
+                        .HasForeignKey("StudentID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Classes");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.Classes", b =>
+                {
+                    b.HasOne("ALtar_WBS.Model.Course", "Course")
+                        .WithMany("Classes")
+                        .HasForeignKey("CourseID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.ClassTeachers", b =>
+                {
+                    b.HasOne("ALtar_WBS.Model.Classes", "Classes")
+                        .WithMany("ClassTeachers")
+                        .HasForeignKey("ClassID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ALtar_WBS.Model.Teacher", "Teacher")
+                        .WithMany("ClassTeachers")
+                        .HasForeignKey("TeacherID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Classes");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.CourseSubject", b =>
+                {
+                    b.HasOne("ALtar_WBS.Model.Course", "Course")
+                        .WithMany("CourseSubjects")
+                        .HasForeignKey("CourseID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ALtar_WBS.Model.Subjects", "Subjects")
+                        .WithMany("CourseSubjects")
+                        .HasForeignKey("SubjectID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Subjects");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.Enrollment", b =>
+                {
+                    b.HasOne("ALtar_WBS.Model.Classes", "Classes")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("ClassID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ALtar_WBS.Model.Student", "Student")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("StudentID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Classes");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.Grade", b =>
+                {
+                    b.HasOne("ALtar_WBS.Model.Course", "Course")
+                        .WithMany("Grades")
+                        .HasForeignKey("CourseID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ALtar_WBS.Model.Student", "Student")
+                        .WithMany("Grades")
+                        .HasForeignKey("StudentID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.Payment", b =>
+                {
+                    b.HasOne("ALtar_WBS.Model.Student", "Student")
+                        .WithMany("payments")
+                        .HasForeignKey("StudentID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.Schedule", b =>
+                {
+                    b.HasOne("ALtar_WBS.Model.Classes", "Classes")
+                        .WithMany("schedules")
+                        .HasForeignKey("ClassID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Classes");
                 });
 
             modelBuilder.Entity("ALtar_WBS.Model.Student", b =>
@@ -331,6 +739,26 @@ namespace ALtar_WBS.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ALtar_WBS.Model.Classes", b =>
+                {
+                    b.Navigation("Attendances");
+
+                    b.Navigation("ClassTeachers");
+
+                    b.Navigation("Enrollments");
+
+                    b.Navigation("schedules");
+                });
+
+            modelBuilder.Entity("ALtar_WBS.Model.Course", b =>
+                {
+                    b.Navigation("Classes");
+
+                    b.Navigation("CourseSubjects");
+
+                    b.Navigation("Grades");
+                });
+
             modelBuilder.Entity("ALtar_WBS.Model.Notifications", b =>
                 {
                     b.Navigation("UserNotifications");
@@ -341,13 +769,31 @@ namespace ALtar_WBS.Migrations
                     b.Navigation("users");
                 });
 
+            modelBuilder.Entity("ALtar_WBS.Model.Student", b =>
+                {
+                    b.Navigation("Attendances");
+
+                    b.Navigation("Enrollments");
+
+                    b.Navigation("Grades");
+
+                    b.Navigation("payments");
+                });
+
             modelBuilder.Entity("ALtar_WBS.Model.SubjectCategories", b =>
                 {
                     b.Navigation("Subjects");
                 });
 
+            modelBuilder.Entity("ALtar_WBS.Model.Subjects", b =>
+                {
+                    b.Navigation("CourseSubjects");
+                });
+
             modelBuilder.Entity("ALtar_WBS.Model.Teacher", b =>
                 {
+                    b.Navigation("ClassTeachers");
+
                     b.Navigation("TeacherSalaries");
                 });
 

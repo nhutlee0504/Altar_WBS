@@ -14,7 +14,7 @@ namespace ALtar_WBS.Model
         public string? Email { get; set; }
         public string? Phone { get; set; }
         public string? Address { get; set; }
-        public string? Status { get; set; }
+        public bool? IsActive { get; set; }
         public int RoleID { get; set; }
         public Role Role { get; set; }
         public ICollection<UserNotifications> UserNotifications { get; set; }

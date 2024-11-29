@@ -5,78 +5,105 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ALtar_WBS.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
-	public class SubjectCategoryController : ControllerBase
-	{
-		private readonly ISubjectCategory _subjectCategoryService;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SubjectCategoryController : ControllerBase
+    {
+        private readonly ISubjectCategory _subjectCategoryService;
 
-		public SubjectCategoryController(ISubjectCategory subjectCategoryService)
-		{
-			_subjectCategoryService = subjectCategoryService;
-		}
+        public SubjectCategoryController(ISubjectCategory subjectCategoryService)
+        {
+            _subjectCategoryService = subjectCategoryService;
+        }
 
-		// Thêm loại môn học
-		[HttpPost]
-		public async Task<IActionResult> AddCategory([FromBody] string categoryName)
-		{
-			if (string.IsNullOrWhiteSpace(categoryName))
-				return BadRequest("Category name cannot be empty.");
+        // Thêm loại môn học
+        [HttpPost]
+        public async Task<IActionResult> AddCategory([FromForm] string categoryName)
+        {
+            try
+            {
+                var category = await _subjectCategoryService.AddCategoryAsync(categoryName);
+                return Ok(category); // Trả về kết quả thêm thành công
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi nếu có
+            }
+        }
 
-			var category = await _subjectCategoryService.AddCategoryAsync(categoryName);
-			return CreatedAtAction(nameof(GetCategoryById), new { id = category.CategoryID }, category);
-		}
+        // Cập nhật loại môn học
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCategory(int id, [FromForm] string categoryName)
+        {
+            try
+            {
+                var updatedCategory = await _subjectCategoryService.UpdateCategoryAsync(id, categoryName);
+                return Ok(updatedCategory); // Trả về kết quả sau khi cập nhật thành công
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi nếu có
+            }
+        }
 
-		// Cập nhật loại môn học
-		[HttpPut("{id}")]
-		public async Task<IActionResult> UpdateCategory(int id, [FromBody] string categoryName)
-		{
-			if (string.IsNullOrWhiteSpace(categoryName))
-				return BadRequest("Category name cannot be empty.");
+        // Xóa loại môn học
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            try
+            {
+                var result = await _subjectCategoryService.DeleteCategoryAsync(id);
+                return NoContent(); // Trả về trạng thái NoContent nếu xóa thành công
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi nếu có
+            }
+        }
 
-			var updatedCategory = await _subjectCategoryService.UpdateCategoryAsync(id, categoryName);
-			if (updatedCategory == null)
-				return NotFound($"Category with ID {id} not found.");
+        // Lấy danh sách loại môn học
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            try
+            {
+                var categories = await _subjectCategoryService.GetAllCategoriesAsync();
+                return Ok(categories); // Trả về danh sách các loại môn học
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi nếu có
+            }
+        }
 
-			return Ok(updatedCategory);
-		}
+        // Lấy thông tin loại môn học theo ID
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCategoryById(int id)
+        {
+            try
+            {
+                var category = await _subjectCategoryService.GetCategoryByIdAsync(id);
+                return Ok(category); // Trả về thông tin danh mục môn học nếu tìm thấy
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi nếu có
+            }
+        }
 
-		// Xóa loại môn học
-		[HttpDelete("{id}")]
-		public async Task<IActionResult> DeleteCategory(int id)
-		{
-			var result = await _subjectCategoryService.DeleteCategoryAsync(id);
-			if (!result)
-				return NotFound($"Category with ID {id} not found.");
-
-			return NoContent();
-		}
-
-		// Lấy danh sách loại môn học
-		[HttpGet]
-		public async Task<ActionResult<IEnumerable<SubjectCategories>>> GetAllCategories()
-		{
-			var categories = await _subjectCategoryService.GetAllCategoriesAsync();
-			return Ok(categories);
-		}
-
-		// Lấy thông tin loại môn học theo ID
-		[HttpGet("{id}")]
-		public async Task<ActionResult<SubjectCategories>> GetCategoryById(int id)
-		{
-			var category = await _subjectCategoryService.GetCategoryByIdAsync(id);
-			if (category == null)
-				return NotFound($"Category with ID {id} not found.");
-
-			return Ok(category);
-		}
-
-		// Kiểm tra loại môn học có tồn tại không
-		[HttpGet("exists/{id}")]
-		public async Task<IActionResult> CategoryExists(int id)
-		{
-			var exists = await _subjectCategoryService.CategoryExistsAsync(id);
-			return Ok(new { Exists = exists });
-		}
-	}
+        // Kiểm tra loại môn học có tồn tại không
+        [HttpGet("exists/{id}")]
+        public async Task<IActionResult> CategoryExists(int id)
+        {
+            try
+            {
+                var exists = await _subjectCategoryService.CategoryExistsAsync(id);
+                return Ok(exists); // Trả về kết quả tồn tại hoặc không
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message); // Trả về lỗi nếu có
+            }
+        }
+    }
 }

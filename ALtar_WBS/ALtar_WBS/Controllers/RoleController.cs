@@ -19,62 +19,108 @@ namespace ALtar_WBS.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAllRoles()
         {
-            var roles = await _roleService.GetAllRoles();
-            return Ok(roles);
+            try
+            {
+                var roles = await _roleService.GetAllRoles();
+                return Ok(roles);
+            }
+            catch (NotImplementedException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("{roleId}")]
         public async Task<IActionResult> GetRoleById(int roleId)
         {
-            var role = await _roleService.GetRoleById(roleId);
-            if (role == null)
-                return NotFound();
-
-            return Ok(role);
+            try
+            {
+                var role = await _roleService.GetRoleById(roleId);
+                return Ok(role);
+            }
+            catch (NotImplementedException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateRole([FromBody] string roleName)
+        public async Task<IActionResult> CreateRole(string roleName)
         {
-            var createdRole = await _roleService.CreateRole(roleName);
-            return CreatedAtAction(nameof(GetRoleById), new { roleId = createdRole.RoleID }, createdRole);
+            try
+            {
+                var createdRole = await _roleService.CreateRole(roleName);
+                return Ok(createdRole);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateRole([FromBody]int roleId, string roleName)
+        public async Task<IActionResult> UpdateRole(int roleId, string roleName)
         {
-            var updatedRole = await _roleService.UpdateRole(roleId, roleName);
-            if (updatedRole == null)
-                return NotFound();
-
-            return Ok(updatedRole);
+            try
+            {
+                var updatedRole = await _roleService.UpdateRole(roleId, roleName);
+                return Ok(updatedRole);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("delete/{roleId}")]
         public async Task<IActionResult> DeleteRole(int roleId)
         {
-            var result = await _roleService.DeleteRole(roleId);
-            if (!result)
-                return NotFound();
-
-            return NoContent();
+            try
+            {
+                var result = await _roleService.DeleteRole(roleId);
+                return Ok(result);
+            }
+            catch (NotImplementedException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost("copy/{roleId}")]
         public async Task<IActionResult> CopyRole(int roleId)
         {
-            var newRole = await _roleService.CopyRole(roleId);
-            return CreatedAtAction(nameof(GetRoleById), new { roleId = newRole.RoleID }, newRole);
+            try
+            {
+                var newRole = await _roleService.CopyRole(roleId);
+                return Ok(newRole);
+            }
+            catch (NotImplementedException ex)
+            {
+                return NotFound(ex.Message);
+            }
+
         }
 
         [HttpPost("assign-role")]
-        public async Task<IActionResult> AssignRoleToUser([FromQuery] int userId, [FromQuery] int roleId)
+        public async Task<IActionResult> AssignRoleToUser( int userId, int roleId)
         {
-            var result = await _roleService.AssignRoleToUser(userId, roleId);
-            if (!result)
-                return BadRequest("Failed to assign role to user");
-
-            return Ok(new { message = "Role assigned successfully" });
+            try
+            {
+                var result = await _roleService.AssignRoleToUser(userId, roleId);
+                return Ok(result);
+            }
+            catch (NotImplementedException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }
