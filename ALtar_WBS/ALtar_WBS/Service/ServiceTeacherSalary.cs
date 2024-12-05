@@ -62,7 +62,7 @@ namespace ALtar_WBS.Service
 				var existingSalary = await _context.teacherSalaries.FindAsync(salaryId);
 
 				if (existingSalary == null)
-					throw new InvalidOperationException("Salary not found.");
+					throw new InvalidOperationException("Salary not found");
 
 				existingSalary.TeacherID = salaryDto.TeacherID;
 				existingSalary.amount = salaryDto.amount;
@@ -94,7 +94,7 @@ namespace ALtar_WBS.Service
 				var salary = await _context.teacherSalaries.FindAsync(salaryId);
 
 				if (salary == null)
-					throw new InvalidOperationException("Salary not found.");
+					throw new InvalidOperationException("Salary not found");
 
 				_context.teacherSalaries.Remove(salary);
 				await _context.SaveChangesAsync();
@@ -114,7 +114,7 @@ namespace ALtar_WBS.Service
 				var salaries = await _context.teacherSalaries.ToListAsync();
 
 				if (salaries == null || !salaries.Any())
-					throw new InvalidOperationException("No salaries found.");
+					throw new InvalidOperationException("No salaries found");
 
 				return salaries;
 			}
@@ -131,7 +131,7 @@ namespace ALtar_WBS.Service
 				var salary = await _context.teacherSalaries.FindAsync(salaryId);
 
 				if (salary == null)
-					throw new InvalidOperationException("Salary not found.");
+					throw new InvalidOperationException("Salary not found");
 
 				return salary;
 			}
@@ -159,7 +159,7 @@ namespace ALtar_WBS.Service
 
 			if (string.IsNullOrEmpty(token))
 			{
-				throw new ArgumentException("Token is missing or invalid.");
+				throw new ArgumentException("Token is missing or invalid");
 			}
 
 			var handler = new JwtSecurityTokenHandler();
@@ -167,7 +167,7 @@ namespace ALtar_WBS.Service
 
 			if (jwtToken == null)
 			{
-				throw new ArgumentException("Invalid JWT token.");
+				throw new ArgumentException("Invalid JWT token");
 			}
 
 			var userName = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
@@ -178,7 +178,7 @@ namespace ALtar_WBS.Service
 
 			if (string.IsNullOrEmpty(userID) || string.IsNullOrEmpty(roleID))
 			{
-				throw new ArgumentException("Required claims (UserID or RoleID) are missing from the token.");
+				throw new ArgumentException("Required claims (UserID or RoleID) are missing from the token");
 			}
 
 			var user = new User

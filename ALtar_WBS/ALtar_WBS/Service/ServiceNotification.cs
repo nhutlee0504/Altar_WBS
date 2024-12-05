@@ -55,7 +55,7 @@ namespace ALtar_WBS.Service
 			{
 				var notification = await _context.notifications.FindAsync(notificationId);
 				if (notification == null)
-					throw new InvalidOperationException("Notification not found.");
+					throw new InvalidOperationException("Notification not found");
 
 				_context.notifications.Remove(notification);
 				await _context.SaveChangesAsync();
@@ -85,7 +85,7 @@ namespace ALtar_WBS.Service
 			{
 				var notification = await _context.notifications.FindAsync(notificationId);
 				if (notification == null)
-					throw new InvalidOperationException("Notification not found.");
+					throw new InvalidOperationException("Notification not found");
 
 				return notification;
 			}
@@ -117,7 +117,7 @@ namespace ALtar_WBS.Service
 			{
 				var user = await _context.users.FindAsync(userId);
 				if (user == null || string.IsNullOrEmpty(user.Email))
-					throw new InvalidOperationException("User not found or email is missing.");
+					throw new InvalidOperationException("User not found or email is missing");
 
 				var emailMessage = new MimeMessage();
 				emailMessage.From.Add(new MailboxAddress("Hệ Thống", SmtpFromAddress));
@@ -147,7 +147,7 @@ namespace ALtar_WBS.Service
 				var user = await _context.users.FindAsync(userId);
 				var notification = await _context.notifications.FindAsync(notificationId);
 				if (user == null || notification == null)
-					throw new InvalidOperationException("User or Notification not found.");
+					throw new InvalidOperationException("User or Notification not found");
 
 				var userNotification = new UserNotifications
 				{

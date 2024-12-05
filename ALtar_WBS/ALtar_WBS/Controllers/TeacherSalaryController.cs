@@ -16,7 +16,6 @@ namespace ALtar_WBS.Controllers
             _salaryService = salaryService;
         }
 
-        // Add salary
         [HttpPost]
         public async Task<IActionResult> AddSalary([FromForm] TeacherSalaryDto salaryDto)
         {
@@ -27,15 +26,14 @@ namespace ALtar_WBS.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Handle InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Handle all other exceptions
+                return BadRequest(ex.Message);
             }
         }
 
-        // Update salary
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSalary(int id, [FromForm] TeacherSalaryDto salaryDto)
         {
@@ -46,15 +44,14 @@ namespace ALtar_WBS.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Handle InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Handle all other exceptions
+                return BadRequest(ex.Message);
             }
         }
 
-        // Delete salary
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSalary(int id)
         {
@@ -65,15 +62,14 @@ namespace ALtar_WBS.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Handle InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Handle all other exceptions
+                return BadRequest(ex.Message);
             }
         }
 
-        // Get all salaries
         [HttpGet]
         public async Task<IActionResult> GetAllSalaries()
         {
@@ -84,15 +80,14 @@ namespace ALtar_WBS.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Handle InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Handle all other exceptions
+                return BadRequest(ex.Message);
             }
         }
 
-        // Get salary by ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSalaryById(int id)
         {
@@ -103,11 +98,11 @@ namespace ALtar_WBS.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Handle InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Handle all other exceptions
+                return BadRequest(ex.Message);
             }
         }
     }

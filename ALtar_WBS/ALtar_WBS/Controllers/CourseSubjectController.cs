@@ -14,7 +14,6 @@ namespace ALtar_WBS.Controllers
             _courseSubjectService = courseSubjectService;
         }
 
-        // Add a new Course-Subject relationship
         [HttpPost]
         public async Task<IActionResult> AddCourseSubject(int courseId, int subjectId)
         {
@@ -33,7 +32,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Check if a Course-Subject relationship exists
         [HttpGet("exists")]
         public async Task<IActionResult> CourseSubjectExists(int courseId, int subjectId)
         {
@@ -52,7 +50,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Delete a Course-Subject relationship by ID
         [HttpDelete("{csId}")]
         public async Task<IActionResult> DeleteCourseSubject(int csId)
         {
@@ -74,7 +71,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Get all Courses by a specific Subject ID
         [HttpGet("courses-by-subject/{subjectId}")]
         public async Task<IActionResult> GetCoursesBySubject(int subjectId)
         {
@@ -93,7 +89,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Get all Subjects by a specific Course ID
         [HttpGet("subjects-by-course/{courseId}")]
         public async Task<IActionResult> GetSubjectsByCourse(int courseId)
         {
@@ -112,7 +107,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Update a Course-Subject relationship
         [HttpPut("{csId}")]
         public async Task<IActionResult> UpdateCourseSubject(int csId, int courseId, int subjectId)
         {

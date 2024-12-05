@@ -56,7 +56,7 @@ namespace ALtar_WBS.Service
 			var existingRole = await _context.roles.FirstOrDefaultAsync(r => r.RoleName == roleName);
 			if (existingRole != null)
 			{
-				throw new InvalidOperationException("Role already exists.");
+				throw new InvalidOperationException("Role already exists");
 			}
 
 			var newRole = new Role
@@ -95,7 +95,7 @@ namespace ALtar_WBS.Service
 			var duplicateRole = await _context.roles.FirstOrDefaultAsync(r => r.RoleName == roleName && r.RoleID != roleId);
 			if (duplicateRole != null)
 			{
-				throw new InvalidOperationException("A role with the same name already exists.");
+				throw new InvalidOperationException("A role with the same name already exists");
 			}
 
 			existingRole.RoleName = roleName;

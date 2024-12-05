@@ -19,8 +19,6 @@ namespace ALtar_WBS.Controllers
         {
             _attendanceService = attendanceService;
         }
-
-        // Thêm thông tin điểm danh mới
         [HttpPost("add")]
         public async Task<IActionResult> AddAttendance([FromBody] AttendaceDto attendanceDto)
         {
@@ -39,7 +37,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Cập nhật thông tin điểm danh của học sinh
         [HttpPut("update/{attendanceId}")]
         public async Task<IActionResult> UpdateAttendance(int attendanceId, [FromBody] AttendaceDto attendanceDto)
         {
@@ -58,7 +55,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy danh sách điểm danh của học sinh theo lớp
         [HttpGet("class/{classId}")]
         public async Task<IActionResult> GetAttendancesByClass(int classId)
         {
@@ -77,7 +73,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy điểm danh của học sinh theo ngày
         [HttpGet("student/{studentId}/date/{date}")]
         public async Task<IActionResult> GetAttendanceByDate(int studentId, DateTime date)
         {
@@ -96,7 +91,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy điểm danh của học sinh theo ID
         [HttpGet("{attendanceId}")]
         public async Task<IActionResult> GetAttendanceById(int attendanceId)
         {
@@ -115,7 +109,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Xóa thông tin điểm danh
         [HttpDelete("{attendanceId}")]
         public async Task<IActionResult> RemoveAttendance(int attendanceId)
         {

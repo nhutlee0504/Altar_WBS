@@ -36,13 +36,13 @@ namespace ALtar_WBS.Service
                     .ToListAsync();
 
                 if (!payments.Any())
-                    throw new InvalidOperationException("No payments found.");
+                    throw new InvalidOperationException("No payments found");
 
                 return payments;
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("An error occurred while retrieving payments.", ex);
+                throw new InvalidOperationException("An error occurred while retrieving payments", ex);
             }
         }
 
@@ -53,7 +53,7 @@ namespace ALtar_WBS.Service
                 var payment = await _context.payments.FindAsync(paymentId);
 
                 if (payment == null)
-                    throw new InvalidOperationException($"Payment with ID {paymentId} not found.");
+                    throw new InvalidOperationException($"Payment with ID {paymentId} not found");
 
                 return new PaymentDto
                 {
@@ -88,7 +88,7 @@ namespace ALtar_WBS.Service
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("An error occurred while creating payment.", ex);
+                throw new InvalidOperationException("An error occurred while creating payment", ex);
             }
         }
 
@@ -99,7 +99,7 @@ namespace ALtar_WBS.Service
                 var payment = await _context.payments.FindAsync(paymentId);
 
                 if (payment == null)
-                    throw new InvalidOperationException($"Payment with ID {paymentId} not found.");
+                    throw new InvalidOperationException($"Payment with ID {paymentId} not found");
 
                 payment.Amount = paymentDto.Amount;
                 payment.PaymentDate = paymentDto.PaymentDate;
@@ -123,7 +123,7 @@ namespace ALtar_WBS.Service
                 var payment = await _context.payments.FindAsync(paymentId);
 
                 if (payment == null)
-                    throw new InvalidOperationException($"Payment with ID {paymentId} not found.");
+                    throw new InvalidOperationException($"Payment with ID {paymentId} not found");
 
                 _context.payments.Remove(payment);
                 await _context.SaveChangesAsync();

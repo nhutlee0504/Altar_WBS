@@ -45,7 +45,7 @@ namespace ALtar_WBS.Service
 			{
 				var category = await _context.subjectCategories.FindAsync(categoryId);
 				if (category == null)
-					throw new InvalidOperationException("Category not found.");
+					throw new InvalidOperationException("Category not found");
 
 				category.CategoryName = categoryName;
 				_context.subjectCategories.Update(category);
@@ -64,7 +64,7 @@ namespace ALtar_WBS.Service
 			{
 				var category = await _context.subjectCategories.FindAsync(categoryId);
 				if (category == null)
-					throw new InvalidOperationException("Category not found.");
+					throw new InvalidOperationException("Category not found");
 
 				_context.subjectCategories.Remove(category);
 				await _context.SaveChangesAsync();
@@ -82,7 +82,7 @@ namespace ALtar_WBS.Service
 			{
 				var categories = await _context.subjectCategories.ToListAsync();
 				if (categories == null || !categories.Any())
-					throw new InvalidOperationException("No categories found.");
+					throw new InvalidOperationException("No categories found");
 
 				return categories;
 			}
@@ -98,7 +98,7 @@ namespace ALtar_WBS.Service
 			{
 				var category = await _context.subjectCategories.FindAsync(categoryId);
 				if (category == null)
-					throw new InvalidOperationException("Category not found.");
+					throw new InvalidOperationException("Category not found");
 
 				return category;
 			}
@@ -126,7 +126,7 @@ namespace ALtar_WBS.Service
 
 			if (string.IsNullOrEmpty(token))
 			{
-				throw new ArgumentException("Token is missing or invalid.");
+				throw new ArgumentException("Token is missing or invalid");
 			}
 
 			var handler = new JwtSecurityTokenHandler();

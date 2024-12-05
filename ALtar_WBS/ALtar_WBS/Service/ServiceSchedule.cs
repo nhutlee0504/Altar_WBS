@@ -30,7 +30,7 @@ namespace ALtar_WBS.Service
 
                 if (schedules == null || !schedules.Any())
                 {
-                    throw new InvalidOperationException("No schedules found.");
+                    throw new InvalidOperationException("No schedules found");
                 }
 
                 return schedules;
@@ -50,7 +50,7 @@ namespace ALtar_WBS.Service
 
                 if (schedule == null)
                 {
-                    throw new InvalidOperationException("Schedule not found.");
+                    throw new InvalidOperationException("Schedule not found");
                 }
 
                 return schedule;
@@ -93,7 +93,7 @@ namespace ALtar_WBS.Service
 
                 if (schedule == null)
                 {
-                    throw new InvalidOperationException("Schedule not found.");
+                    throw new InvalidOperationException("Schedule not found");
                 }
 
                 schedule.DayOfWeek = scheduleDto.DayOfWeek;
@@ -120,7 +120,7 @@ namespace ALtar_WBS.Service
 
                 if (schedule == null)
                 {
-                    throw new InvalidOperationException("Schedule not found.");
+                    throw new InvalidOperationException("Schedule not found");
                 }
 
                 _context.schedules.Remove(schedule);

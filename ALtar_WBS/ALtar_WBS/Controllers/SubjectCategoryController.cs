@@ -16,93 +16,87 @@ namespace ALtar_WBS.Controllers
             _subjectCategoryService = subjectCategoryService;
         }
 
-        // Thêm loại môn học
         [HttpPost]
         public async Task<IActionResult> AddCategory([FromForm] string categoryName)
         {
             try
             {
                 var category = await _subjectCategoryService.AddCategoryAsync(categoryName);
-                return Ok(category); // Trả về kết quả thêm thành công
+                return Ok(category);
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi nếu có
+                return BadRequest(ex.Message);
             }
         }
 
-        // Cập nhật loại môn học
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, [FromForm] string categoryName)
         {
             try
             {
                 var updatedCategory = await _subjectCategoryService.UpdateCategoryAsync(id, categoryName);
-                return Ok(updatedCategory); // Trả về kết quả sau khi cập nhật thành công
+                return Ok(updatedCategory);
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi nếu có
+                return BadRequest(ex.Message);
             }
         }
 
-        // Xóa loại môn học
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             try
             {
                 var result = await _subjectCategoryService.DeleteCategoryAsync(id);
-                return NoContent(); // Trả về trạng thái NoContent nếu xóa thành công
+                return NoContent();
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi nếu có
+                return BadRequest(ex.Message);
             }
         }
 
-        // Lấy danh sách loại môn học
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
             try
             {
                 var categories = await _subjectCategoryService.GetAllCategoriesAsync();
-                return Ok(categories); // Trả về danh sách các loại môn học
+                return Ok(categories);
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi nếu có
+                return BadRequest(ex.Message);
             }
         }
 
-        // Lấy thông tin loại môn học theo ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryById(int id)
         {
             try
             {
                 var category = await _subjectCategoryService.GetCategoryByIdAsync(id);
-                return Ok(category); // Trả về thông tin danh mục môn học nếu tìm thấy
+                return Ok(category);
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi nếu có
+                return BadRequest(ex.Message);
             }
         }
 
-        // Kiểm tra loại môn học có tồn tại không
         [HttpGet("exists/{id}")]
         public async Task<IActionResult> CategoryExists(int id)
         {
             try
             {
                 var exists = await _subjectCategoryService.CategoryExistsAsync(id);
-                return Ok(exists); // Trả về kết quả tồn tại hoặc không
+                return Ok(exists);
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi nếu có
+                return BadRequest(ex.Message);
             }
         }
     }

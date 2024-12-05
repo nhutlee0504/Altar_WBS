@@ -18,7 +18,6 @@ namespace ALtar_WBS.Controllers
             _scheduleService = scheduleService;
         }
 
-        // Lấy danh sách tất cả các lịch
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Schedule>>> GetAllSchedules()
         {
@@ -33,7 +32,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy lịch theo ID
         [HttpGet("{id}")]
         public async Task<ActionResult<Schedule>> GetScheduleById(int id)
         {
@@ -48,7 +46,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Tạo mới một lịch
         [HttpPost]
         public async Task<ActionResult<Schedule>> CreateSchedule([FromBody] ScheduleDto scheduleDto)
         {
@@ -63,7 +60,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Cập nhật lịch
         [HttpPut("{id}")]
         public async Task<ActionResult<Schedule>> UpdateSchedule(int id, [FromBody] ScheduleDto scheduleDto)
         {
@@ -78,7 +74,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Xóa lịch
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteSchedule(int id)
         {
@@ -87,7 +82,7 @@ namespace ALtar_WBS.Controllers
                 var success = await _scheduleService.DeleteScheduleAsync(id);
                 if (success)
                 {
-                    return NoContent(); // 204 No Content
+                    return NoContent();
                 }
                 return NotFound(new { Message = "Schedule not found" });
             }

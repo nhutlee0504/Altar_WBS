@@ -17,7 +17,6 @@ namespace ALtar_WBS.Controllers
             _courseService = courseService;
         }
 
-        // Thêm khóa học
         [HttpPost]
         public async Task<IActionResult> AddCourse([FromForm] CourseDto course)
         {
@@ -32,7 +31,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Cập nhật khóa học
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCourse(int id, [FromForm] CourseDto course)
         {
@@ -47,7 +45,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Xóa khóa học
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
@@ -62,7 +59,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy danh sách tất cả khóa học
         [HttpGet]
         public async Task<IActionResult> GetAllCourses()
         {
@@ -77,7 +73,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy khóa học theo ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCourseById(int id)
         {
@@ -92,7 +87,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy các khóa học theo thời lượng
         [HttpGet("duration/{duration}")]
         public async Task<IActionResult> GetCoursesByDuration(int duration)
         {
@@ -107,7 +101,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy các khóa học theo khoảng học phí
         [HttpGet("fee-range")]
         public async Task<IActionResult> GetCoursesByFeeRange(decimal minFee, decimal maxFee)
         {
@@ -122,7 +115,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy các khóa học đang diễn ra
         [HttpGet("ongoing")]
         public async Task<IActionResult> GetOngoingCourses()
         {

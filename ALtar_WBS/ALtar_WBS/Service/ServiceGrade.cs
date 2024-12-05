@@ -34,7 +34,7 @@ namespace ALtar_WBS.Service
 			}
 			catch (Exception ex)
 			{
-				throw new InvalidOperationException("An error occurred while adding the grade.", ex);
+				throw new InvalidOperationException("An error occurred while adding the grade", ex);
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace ALtar_WBS.Service
 
 				if (grade == null)
 				{
-					throw new InvalidOperationException("Grade not found for update.");
+					throw new InvalidOperationException("Grade not found for update");
 				}
 
 				grade.GradeValue = gradeValue;
@@ -58,7 +58,7 @@ namespace ALtar_WBS.Service
 			}
 			catch (Exception ex)
 			{
-				throw new InvalidOperationException("An error occurred while updating the grade.", ex);
+				throw new InvalidOperationException("An error occurred while updating the grade", ex);
 			}
 		}
 
@@ -74,7 +74,7 @@ namespace ALtar_WBS.Service
 			}
 			catch (Exception ex)
 			{
-				throw new InvalidOperationException("An error occurred while retrieving the grades for the student.", ex);
+				throw new InvalidOperationException("An error occurred while retrieving the grades for the student", ex);
 			}
 		}
 
@@ -90,7 +90,7 @@ namespace ALtar_WBS.Service
 			}
 			catch (Exception ex)
 			{
-				throw new InvalidOperationException("An error occurred while retrieving the grades for the course.", ex);
+				throw new InvalidOperationException("An error occurred while retrieving the grades for the course", ex);
 			}
 		}
 
@@ -103,14 +103,14 @@ namespace ALtar_WBS.Service
 
 				if (grade == null)
 				{
-					throw new InvalidOperationException("Grade not found for the provided ID.");
+					throw new InvalidOperationException("Grade not found for the provided ID");
 				}
 
 				return grade;
 			}
 			catch (Exception ex)
 			{
-				throw new InvalidOperationException("An error occurred while retrieving the grade.", ex);
+				throw new InvalidOperationException("An error occurred while retrieving the grade", ex);
 			}
 		}
 
@@ -122,7 +122,7 @@ namespace ALtar_WBS.Service
 
 				if (grade == null)
 				{
-					throw new InvalidOperationException("Grade not found for deletion.");
+					throw new InvalidOperationException("Grade not found for deletion");
 				}
 
 				_context.grades.Remove(grade);
@@ -130,7 +130,7 @@ namespace ALtar_WBS.Service
 			}
 			catch (Exception ex)
 			{
-				throw new InvalidOperationException("An error occurred while deleting the grade.", ex);
+				throw new InvalidOperationException("An error occurred while deleting the grade", ex);
 			}
 		}
 	}

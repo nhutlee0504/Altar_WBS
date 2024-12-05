@@ -30,7 +30,7 @@ namespace ALtar_WBS.Service
 				var roleUser = await _context.roles.FindAsync(user.RoleID);
 				if (roleUser == null || roleUser.RoleName != "Teacher")
 				{
-					throw new InvalidOperationException("User does not have the required 'Teacher' role.");
+					throw new InvalidOperationException("User does not have the required 'Teacher' role");
 				}
 
 				var newTeacher = new Teacher
@@ -89,7 +89,7 @@ namespace ALtar_WBS.Service
 			{
 				var teacher = await _context.teachers.FindAsync(teacherId);
 				if (teacher == null)
-					throw new InvalidOperationException("Teacher not found.");
+					throw new InvalidOperationException("Teacher not found");
 
 				_context.teachers.Remove(teacher);
 				await _context.SaveChangesAsync();
@@ -154,7 +154,7 @@ namespace ALtar_WBS.Service
 			{
 				var existingTeacher = await _context.teachers.FindAsync(teacherId);
 				if (existingTeacher == null)
-					throw new InvalidOperationException("Teacher not found.");
+					throw new InvalidOperationException("Teacher not found");
 
 				if (profileImage != null)
 				{
@@ -252,7 +252,7 @@ namespace ALtar_WBS.Service
 
 			if (string.IsNullOrEmpty(userID) || string.IsNullOrEmpty(roleID))
 			{
-				throw new ArgumentException("Required claims (UserID or RoleID) are missing from the token.");
+				throw new ArgumentException("Required claims (UserID or RoleID) are missing from the token");
 			}
 
 			var user = new User

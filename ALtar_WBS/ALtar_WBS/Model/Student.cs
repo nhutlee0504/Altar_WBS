@@ -7,7 +7,7 @@ namespace ALtar_WBS.Model
 	{
 		[Key]
 		[ForeignKey("User")]
-		public int UserID { get; set; } // UserID là khóa chính
+		public int UserID { get; set; }
 		public User User { get; set; }
 		public DateTime DateOfBirth { get; set; }
 		public string Address { get; set; }

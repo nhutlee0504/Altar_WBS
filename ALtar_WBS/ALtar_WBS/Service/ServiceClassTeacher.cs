@@ -35,8 +35,7 @@ namespace ALtar_WBS.Service
 			}
 			catch (Exception ex)
 			{
-				// Log exception if needed
-				throw new InvalidOperationException("An error occurred while adding the class teacher.", ex);
+				throw new InvalidOperationException("An error occurred while adding the class teacher", ex);
 			}
 		}
 
@@ -51,15 +50,14 @@ namespace ALtar_WBS.Service
 
 				if (classIds == null || !classIds.Any())
 				{
-					throw new InvalidOperationException("No classes found for the specified teacher.");
+					throw new InvalidOperationException("No classes found for the specified teacher");
 				}
 
 				return classIds;
 			}
 			catch (Exception ex)
 			{
-				// Log exception if needed
-				throw new InvalidOperationException("An error occurred while retrieving classes for the teacher.", ex);
+				throw new InvalidOperationException("An error occurred while retrieving classes for the teacher", ex);
 			}
 		}
 
@@ -74,7 +72,7 @@ namespace ALtar_WBS.Service
 
 				if (teacherIds == null || !teacherIds.Any())
 				{
-					throw new InvalidOperationException("No teachers found for the specified class.");
+					throw new InvalidOperationException("No teachers found for the specified class");
 				}
 
 				return teacherIds;
@@ -82,7 +80,7 @@ namespace ALtar_WBS.Service
 			catch (Exception ex)
 			{
 				// Log exception if needed
-				throw new InvalidOperationException("An error occurred while retrieving teachers for the class.", ex);
+				throw new InvalidOperationException("An error occurred while retrieving teachers for the class", ex);
 			}
 		}
 
@@ -98,7 +96,7 @@ namespace ALtar_WBS.Service
 			catch (Exception ex)
 			{
 				// Log exception if needed
-				throw new InvalidOperationException("An error occurred while checking if the teacher is assigned to the class.", ex);
+				throw new InvalidOperationException("An error occurred while checking if the teacher is assigned to the class", ex);
 			}
 		}
 
@@ -111,7 +109,7 @@ namespace ALtar_WBS.Service
 
 				if (classTeacher == null)
 				{
-					throw new InvalidOperationException("The specified class teacher relationship was not found.");
+					throw new InvalidOperationException("The specified class teacher relationship was not found");
 				}
 
 				_context.classTeachers.Remove(classTeacher);
@@ -120,7 +118,7 @@ namespace ALtar_WBS.Service
 			catch (Exception ex)
 			{
 				// Log exception if needed
-				throw new InvalidOperationException("An error occurred while removing the class teacher.", ex);
+				throw new InvalidOperationException("An error occurred while removing the class teacher", ex);
 			}
 		}
 	}

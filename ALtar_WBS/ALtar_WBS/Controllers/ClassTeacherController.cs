@@ -16,7 +16,6 @@ namespace ALtar_WBS.Controllers
             _service = service;
         }
 
-        // Thêm giáo viên vào lớp
         [HttpPost("add")]
         public async Task<IActionResult> AddClassTeacherAsync(int classId, int teacherId)
         {
@@ -35,7 +34,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy danh sách lớp của giáo viên
         [HttpGet("get-classes-by-teacher/{teacherId}")]
         public async Task<IActionResult> GetClassesByTeacherAsync(int teacherId)
         {
@@ -54,7 +52,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy danh sách giáo viên của một lớp
         [HttpGet("get-teachers-by-class/{classId}")]
         public async Task<IActionResult> GetTeachersByClassAsync(int classId)
         {
@@ -73,7 +70,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Kiểm tra xem giáo viên đã được phân công vào lớp chưa
         [HttpGet("is-teacher-assigned/{classId}/{teacherId}")]
         public async Task<IActionResult> IsTeacherAssignedToClassAsync(int classId, int teacherId)
         {
@@ -92,7 +88,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Xóa giáo viên khỏi lớp
         [HttpDelete("remove")]
         public async Task<IActionResult> RemoveClassTeacherAsync(int classId, int teacherId)
         {

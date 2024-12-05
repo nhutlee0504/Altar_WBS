@@ -22,7 +22,7 @@ namespace ALtar_WBS.Service
             try
             {
                 if (subject == null)
-                    throw new InvalidOperationException("Subject cannot be null.");
+                    throw new InvalidOperationException("Subject cannot be null");
 
                 var newSubject = new Subjects
                 {
@@ -47,7 +47,7 @@ namespace ALtar_WBS.Service
             {
                 var existingSubject = await _context.subjects.FindAsync(subjectId);
                 if (existingSubject == null)
-                    throw new InvalidOperationException($"Subject with ID {subjectId} not found.");
+                    throw new InvalidOperationException($"Subject with ID {subjectId} not found");
 
                 existingSubject.SubjectName = subject.SubjectName;
                 existingSubject.Level = subject.Level;
@@ -69,7 +69,7 @@ namespace ALtar_WBS.Service
             {
                 var subject = await _context.subjects.FindAsync(subjectId);
                 if (subject == null)
-                    throw new InvalidOperationException($"Subject with ID {subjectId} not found.");
+                    throw new InvalidOperationException($"Subject with ID {subjectId} not found");
 
                 _context.subjects.Remove(subject);
                 await _context.SaveChangesAsync();
@@ -87,7 +87,7 @@ namespace ALtar_WBS.Service
             {
                 var subjects = await _context.subjects.ToListAsync();
                 if (subjects == null || !subjects.Any())
-                    throw new InvalidOperationException("No subjects found.");
+                    throw new InvalidOperationException("No subjects found");
 
                 return subjects;
             }
@@ -103,7 +103,7 @@ namespace ALtar_WBS.Service
             {
                 var subject = await _context.subjects.FirstOrDefaultAsync(s => s.SubjectID == subjectId);
                 if (subject == null)
-                    throw new InvalidOperationException($"Subject with ID {subjectId} not found.");
+                    throw new InvalidOperationException($"Subject with ID {subjectId} not found");
 
                 return subject;
             }

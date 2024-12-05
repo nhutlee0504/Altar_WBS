@@ -23,19 +23,19 @@ namespace ALtar_WBS.Service
 			var emailRegex = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
 			if (!Regex.IsMatch(userDto.Email, emailRegex))
 			{
-				throw new InvalidOperationException("Invalid email format.");
+				throw new InvalidOperationException("Invalid email format");
 			}
 
 			var passwordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$";
 			if (!Regex.IsMatch(userDto.Password, passwordRegex))
 			{
-				throw new InvalidOperationException("Password must be at least 8 characters long and contain a mix of upper and lower case letters, and numbers.");
+				throw new InvalidOperationException("Password must be at least 8 characters long and contain a mix of upper and lower case letters, and numbers");
 			}
 
 			var phoneRegex = @"^0\d{9}$";
 			if (!Regex.IsMatch(userDto.Phone, phoneRegex))
 			{
-				throw new InvalidOperationException("Phone number must be 10 digits and start with 0.");
+				throw new InvalidOperationException("Phone number must be 10 digits and start with 0");
 			}
 
 			var hashPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
@@ -124,7 +124,7 @@ namespace ALtar_WBS.Service
 			var user = await _context.users.FindAsync(userId);
 			if (user == null)
 			{
-				throw new InvalidOperationException("User not found.");
+				throw new InvalidOperationException("User not found");
 			}
 
 			var emailRegex = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";

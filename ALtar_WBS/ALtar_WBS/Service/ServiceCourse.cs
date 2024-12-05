@@ -22,7 +22,7 @@ namespace ALtar_WBS.Service
 			try
 			{
 				if (course == null)
-					throw new InvalidOperationException("Invalid course data.");
+					throw new InvalidOperationException("Invalid course data");
 
 				var newCou = new Course
 				{
@@ -61,7 +61,7 @@ namespace ALtar_WBS.Service
 			{
 				var course = await _context.courses.FindAsync(courseId);
 				if (course == null)
-					throw new InvalidOperationException($"Course with ID {courseId} not found.");
+					throw new InvalidOperationException($"Course with ID {courseId} not found");
 
 				_context.courses.Remove(course);
 				await _context.SaveChangesAsync();
@@ -79,7 +79,7 @@ namespace ALtar_WBS.Service
 			{
 				var courses = await _context.courses.ToListAsync();
 				if (courses == null || !courses.Any())
-					throw new InvalidOperationException("No courses found.");
+					throw new InvalidOperationException("No courses found");
 
 				return courses;
 			}
@@ -95,7 +95,7 @@ namespace ALtar_WBS.Service
 			{
 				var course = await _context.courses.FirstOrDefaultAsync(c => c.CourseID == courseId);
 				if (course == null)
-					throw new InvalidOperationException($"Course with ID {courseId} not found.");
+					throw new InvalidOperationException($"Course with ID {courseId} not found");
 
 				return course;
 			}
@@ -153,7 +153,7 @@ namespace ALtar_WBS.Service
 					.ToListAsync();
 
 				if (courses == null || !courses.Any())
-					throw new InvalidOperationException("No ongoing courses found.");
+					throw new InvalidOperationException("No ongoing courses found");
 
 				return courses;
 			}
@@ -169,7 +169,7 @@ namespace ALtar_WBS.Service
 			{
 				var existingCourse = await _context.courses.FindAsync(courseId);
 				if (existingCourse == null)
-					throw new InvalidOperationException($"Course with ID {courseId} not found.");
+					throw new InvalidOperationException($"Course with ID {courseId} not found");
 
 				existingCourse.CourseName = course.CourseName;
 				existingCourse.StartDate = course.StartDate;

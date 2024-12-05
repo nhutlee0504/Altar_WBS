@@ -17,109 +17,103 @@ namespace ALtar_WBS.Controllers
             _subjectService = subjectService;
         }
 
-        // Thêm môn học
         [HttpPost]
         public async Task<IActionResult> AddSubject([FromForm] SubjectDto subject)
         {
             try
             {
                 var addedSubject = await _subjectService.AddSubjectAsync(subject);
-                return Ok(addedSubject); // Return Ok with the result
+                return Ok(addedSubject);
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Return BadRequest with the error message
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Return internal server error
+                return BadRequest(ex.Message);
             }
         }
 
-        // Cập nhật môn học
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSubject(int id, [FromForm] SubjectDto subject)
         {
             try
             {
                 var updatedSubject = await _subjectService.UpdateSubjectAsync(id, subject);
-                return Ok(updatedSubject); // Return Ok with the updated subject
+                return Ok(updatedSubject);
             }
             catch (InvalidOperationException ex)
             {
-                return NotFound(ex.Message); // Return NotFound with the error message
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Return internal server error
+                return BadRequest(ex.Message);
             }
         }
 
-        // Xóa môn học
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSubject(int id)
         {
             try
             {
                 var result = await _subjectService.DeleteSubjectAsync(id);
-                return NoContent(); // Return NoContent for successful deletion
+                return NoContent();
             }
             catch (InvalidOperationException ex)
             {
-                return NotFound(ex.Message); // Return NotFound with the error message
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Return internal server error
+                return BadRequest(ex.Message);
             }
         }
 
-        // Lấy danh sách môn học
         [HttpGet]
         public async Task<IActionResult> GetAllSubjects()
         {
             try
             {
                 var subjects = await _subjectService.GetAllSubjectsAsync();
-                return Ok(subjects); // Return Ok with the list of subjects
+                return Ok(subjects);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Return internal server error
+                return BadRequest(ex.Message);
             }
         }
 
-        // Lấy thông tin môn học theo ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSubjectById(int id)
         {
             try
             {
                 var subject = await _subjectService.GetSubjectByIdAsync(id);
-                return Ok(subject); // Return Ok with the subject
+                return Ok(subject);
             }
             catch (InvalidOperationException ex)
             {
-                return NotFound(ex.Message); // Return NotFound with the error message
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Return internal server error
+                return BadRequest(ex.Message);
             }
         }
 
-        // Kiểm tra môn học có tồn tại không
         [HttpGet("exists/{id}")]
         public async Task<IActionResult> SubjectExists(int id)
         {
             try
             {
                 var exists = await _subjectService.SubjectExistsAsync(id);
-                return Ok(exists); // Return Ok with existence status
+                return Ok(exists);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Return internal server error
+                return BadRequest(ex.Message);
             }
         }
     }

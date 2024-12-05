@@ -13,13 +13,11 @@ namespace ALtar_WBS.Controllers
     {
         private readonly InterfaceGrade _serviceGrade;
 
-        // Constructor nhận vào ServiceGrade
         public GradeController(InterfaceGrade serviceGrade)
         {
             _serviceGrade = serviceGrade;
         }
 
-        // Thêm điểm mới
         [HttpPost]
         public async Task<IActionResult> AddGradeAsync([FromBody] GradeDto gradeDto)
         {
@@ -39,7 +37,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Cập nhật điểm
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGradeAsync(int id, [FromBody] GradeDto gradeDto)
         {
@@ -59,7 +56,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy điểm của học sinh theo khóa học
         [HttpGet("by-course/{courseId}")]
         public async Task<IActionResult> GetGradesByCourseAsync(int courseId)
         {
@@ -74,7 +70,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy điểm của học sinh theo học sinh ID
         [HttpGet("by-student/{studentId}")]
         public async Task<IActionResult> GetGradesByStudentAsync(int studentId)
         {
@@ -89,7 +84,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Lấy điểm theo ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGradeByIdAsync(int id)
         {
@@ -108,7 +102,6 @@ namespace ALtar_WBS.Controllers
             }
         }
 
-        // Xóa điểm của học sinh
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveGradeAsync(int id)
         {

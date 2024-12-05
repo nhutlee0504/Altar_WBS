@@ -31,12 +31,12 @@ namespace ALtar_WBS.Service
             // Kiểm tra nếu người dùng không tồn tại hoặc không phải là Center Management
             if (user == null || user.Role.RoleName != "Center Management")
             {
-                throw new InvalidOperationException("Invalid username or password.");
+                throw new InvalidOperationException("Invalid username or password");
             }
 
             if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
             {
-                throw new InvalidOperationException("Invalid username or password.");
+                throw new InvalidOperationException("Invalid username or password");
             }
 
             return GenerateJwtToken(user);
@@ -95,7 +95,7 @@ namespace ALtar_WBS.Service
 
             if (string.IsNullOrEmpty(token))
             {
-                throw new ArgumentException("Token is missing or invalid.");
+                throw new ArgumentException("Token is missing or invalid");
             }
 
             var handler = new JwtSecurityTokenHandler();
@@ -103,7 +103,7 @@ namespace ALtar_WBS.Service
 
             if (jwtToken == null)
             {
-                throw new ArgumentException("Invalid JWT token.");
+                throw new ArgumentException("Invalid JWT token");
             }
 
             var userName = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
@@ -114,7 +114,7 @@ namespace ALtar_WBS.Service
 
             if (string.IsNullOrEmpty(userID) || string.IsNullOrEmpty(roleID))
             {
-                throw new ArgumentException("Required claims (UserID or RoleID) are missing from the token.");
+                throw new ArgumentException("Required claims (UserID or RoleID) are missing from the token");
             }
 
             var user = new User

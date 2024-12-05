@@ -72,7 +72,7 @@ namespace ALtar_WBS.Data
 			modelBuilder.Entity<Subjects>()
 					.HasOne(u => u.SubjectCategories)
 					.WithMany(r => r.Subjects)
-					.HasForeignKey(u => u.CategoryID)  // Chỉ rõ khóa ngoại là CategoryID
+					.HasForeignKey(u => u.CategoryID)
 					.OnDelete(DeleteBehavior.Restrict);
 
 			modelBuilder.Entity<CourseSubject>()

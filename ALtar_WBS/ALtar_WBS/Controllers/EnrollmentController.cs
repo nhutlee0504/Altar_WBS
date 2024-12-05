@@ -16,7 +16,6 @@ namespace ALtar_WBS.Controllers
 			_service = service;
 		}
 
-		// POST: api/Enrollment
 		[HttpPost]
 		public async Task<ActionResult<Enrollment>> AddEnrollment([FromBody] EnrollmentDto enrollmentDto)
 		{
@@ -31,7 +30,6 @@ namespace ALtar_WBS.Controllers
 			}
 		}
 
-		// DELETE: api/Enrollment/{id}
 		[HttpDelete("{id}")]
 		public async Task<ActionResult> DeleteEnrollment(int id)
 		{
@@ -46,7 +44,6 @@ namespace ALtar_WBS.Controllers
 			}
 		}
 
-		// GET: api/Enrollment
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<Enrollment>>> GetAllEnrollments()
 		{
@@ -61,7 +58,6 @@ namespace ALtar_WBS.Controllers
 			}
 		}
 
-		// GET: api/Enrollment/{id}
 		[HttpGet("{id}")]
 		public async Task<ActionResult<Enrollment>> GetEnrollmentById(int id)
 		{
@@ -80,7 +76,6 @@ namespace ALtar_WBS.Controllers
 			}
 		}
 
-		// PUT: api/Enrollment/{id}
 		[HttpPut("{id}")]
 		public async Task<ActionResult<Enrollment>> UpdateEnrollment(int id, [FromBody] EnrollmentDto enrollmentDto)
 		{

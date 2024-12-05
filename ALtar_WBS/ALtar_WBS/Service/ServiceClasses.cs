@@ -28,7 +28,7 @@ namespace ALtar_WBS.Service
 
                 if (classes == null || !classes.Any())
                 {
-                    throw new InvalidOperationException("No classes found.");
+                    throw new InvalidOperationException("No classes found");
                 }
 
                 return classes;
@@ -53,7 +53,7 @@ namespace ALtar_WBS.Service
 
                 if (classes == null || !classes.Any())
                 {
-                    throw new InvalidOperationException("No classes found for the specified course.");
+                    throw new InvalidOperationException("No classes found for the specified course");
                 }
 
                 return classes;
@@ -98,7 +98,7 @@ namespace ALtar_WBS.Service
                 var course = await _context.courses.FindAsync(idCourse);
                 if (course == null)
                 {
-                    throw new InvalidOperationException("Course not found.");
+                    throw new InvalidOperationException("Course not found");
                 }
 
                 var newClass = new Classes
@@ -130,12 +130,12 @@ namespace ALtar_WBS.Service
 
                 if (classEntity == null)
                 {
-                    throw new InvalidOperationException("Class not found.");
+                    throw new InvalidOperationException("Class not found");
                 }
 
                 if (course == null)
                 {
-                    throw new InvalidOperationException("Course not found.");
+                    throw new InvalidOperationException("Course not found");
                 }
 
                 classEntity.CourseID = idCourse;
@@ -161,7 +161,7 @@ namespace ALtar_WBS.Service
 
                 if (classEntity == null)
                 {
-                    throw new InvalidOperationException("Class not found.");
+                    throw new InvalidOperationException("Class not found");
                 }
 
                 _context.classes.Remove(classEntity);

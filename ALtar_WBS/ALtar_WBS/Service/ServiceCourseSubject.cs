@@ -56,7 +56,7 @@ namespace ALtar_WBS.Service
             {
                 var courseSubject = await _context.courseSubjects.FindAsync(csId);
                 if (courseSubject == null)
-                    throw new InvalidOperationException("Course-Subject relationship not found.");
+                    throw new InvalidOperationException("Course-Subject relationship not found");
 
                 _context.courseSubjects.Remove(courseSubject);
                 await _context.SaveChangesAsync();
@@ -83,7 +83,7 @@ namespace ALtar_WBS.Service
                     .ToListAsync();
 
                 if (courses == null || !courses.Any())
-                    throw new InvalidOperationException("No courses found for the specified subject.");
+                    throw new InvalidOperationException("No courses found for the specified subject");
 
                 return courses;
             }
@@ -107,7 +107,7 @@ namespace ALtar_WBS.Service
                     .FirstOrDefaultAsync(cs => cs.csID == csId);
 
                 if (courseSubject == null)
-                    throw new InvalidOperationException("Course-Subject relationship not found.");
+                    throw new InvalidOperationException("Course-Subject relationship not found");
 
                 return courseSubject;
             }
@@ -151,7 +151,7 @@ namespace ALtar_WBS.Service
             {
                 var courseSubject = await _context.courseSubjects.FindAsync(csId);
                 if (courseSubject == null)
-                    throw new InvalidOperationException("Course-Subject relationship not found.");
+                    throw new InvalidOperationException("Course-Subject relationship not found");
 
                 courseSubject.CourseID = courseId;
                 courseSubject.SubjectID = subjectId;

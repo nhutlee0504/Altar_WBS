@@ -16,117 +16,111 @@ namespace ALtar_WBS.Controllers
             _studentService = studentService;
         }
 
-        // Thêm sinh viên
         [HttpPost]
         public async Task<IActionResult> AddStudent([FromForm] StudentDto studentDto, IFormFile profileImage)
         {
             try
             {
                 var student = await _studentService.AddStudent(studentDto, profileImage);
-                return Ok(student);  // Trả về sinh viên đã thêm
+                return Ok(student);
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);  // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);  // Trả về thông báo lỗi chung
+                return BadRequest(ex.Message);
             }
         }
 
-        // Lấy danh sách sinh viên
         [HttpGet]
         public async Task<IActionResult> GetAllStudents()
         {
             try
             {
                 var students = await _studentService.GetAllStudents();
-                return Ok(students);  // Trả về danh sách sinh viên
+                return Ok(students);
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);  // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);  // Trả về thông báo lỗi chung
+                return BadRequest(ex.Message);
             }
         }
 
-        // Lấy thông tin sinh viên theo ID
         [HttpGet("{studentId}")]
         public async Task<IActionResult> GetStudentById(int studentId)
         {
             try
             {
                 var student = await _studentService.GetStudentById(studentId);
-                return Ok(student);  // Trả về thông tin sinh viên
+                return Ok(student);
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);  // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);  // Trả về thông báo lỗi chung
+                return BadRequest(ex.Message);
             }
         }
 
-        // Cập nhật thông tin sinh viên
         [HttpPut("{studentId}")]
         public async Task<IActionResult> UpdateStudent(int studentId, [FromForm] StudentDto studentDto, IFormFile profileImage)
         {
             try
             {
                 var updatedStudent = await _studentService.UpdateStudent(studentId, studentDto, profileImage);
-                return Ok(updatedStudent);  // Trả về sinh viên đã cập nhật
+                return Ok(updatedStudent);
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);  // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);  // Trả về thông báo lỗi chung
+                return BadRequest(ex.Message);
             }
         }
 
-        // Xóa sinh viên
         [HttpDelete("{studentId}")]
         public async Task<IActionResult> DeleteStudent(int studentId)
         {
             try
             {
                 var success = await _studentService.DeleteStudent(studentId);
-                return Ok(success);  // Trả về thông báo xóa thành công
+                return Ok(success);
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);  // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);  // Trả về thông báo lỗi chung
+                return BadRequest(ex.Message);
             }
         }
 
-        // Kiểm tra sinh viên có tồn tại không
         [HttpGet("exists/{studentId}")]
         public async Task<IActionResult> StudentExists(int studentId)
         {
             try
             {
                 var exists = await _studentService.StudentExists(studentId);
-                return Ok(new { exists });  // Trả về kết quả kiểm tra sinh viên
+                return Ok(new { exists });
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);  // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);  // Trả về thông báo lỗi chung
+                return BadRequest(ex.Message);
             }
         }
     }

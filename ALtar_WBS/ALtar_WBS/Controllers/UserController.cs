@@ -17,7 +17,6 @@ namespace ALtar_WBS.Controllers
             _userService = userService;
         }
 
-        // Thêm một người dùng mới
         [HttpPost("add")]
         public async Task<IActionResult> AddUser([FromForm] UserDto userDto)
         {
@@ -28,15 +27,14 @@ namespace ALtar_WBS.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+                return BadRequest(ex.Message);
             }
         }
 
-        // Lấy danh sách tất cả người dùng
         [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
@@ -47,15 +45,14 @@ namespace ALtar_WBS.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+                return BadRequest(ex.Message);
             }
         }
 
-        // Lấy thông tin người dùng theo ID
         [HttpGet("{userId}")]
         public async Task<ActionResult<User>> GetUserById(int userId)
         {
@@ -66,15 +63,14 @@ namespace ALtar_WBS.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+                return BadRequest(ex.Message);
             }
         }
 
-        // Khóa tài khoản người dùng
         [HttpPatch("lock/{userId}")]
         public async Task<IActionResult> LockUserAccount(int userId)
         {
@@ -85,15 +81,14 @@ namespace ALtar_WBS.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+                return BadRequest(ex.Message);
             }
         }
 
-        // Mở khóa tài khoản người dùng
         [HttpPatch("unlock/{userId}")]
         public async Task<IActionResult> UnlockUserAccount(int userId)
         {
@@ -104,15 +99,14 @@ namespace ALtar_WBS.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+                return BadRequest(ex.Message);
             }
         }
 
-        // Cài đặt lại mật khẩu người dùng
         [HttpPatch("reset-password/{userId}")]
         public async Task<IActionResult> ResetPassword(int userId, string newPassword)
         {
@@ -123,15 +117,14 @@ namespace ALtar_WBS.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+                return BadRequest(ex.Message);
             }
         }
 
-        // Tìm kiếm người dùng theo từ khóa
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<User>>> SearchUsers(string keyword)
         {
@@ -142,15 +135,14 @@ namespace ALtar_WBS.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+                return BadRequest(ex.Message);
             }
         }
 
-        // Cập nhật thông tin người dùng
         [HttpPut("update/{userId}")]
         public async Task<IActionResult> UpdateUser(int userId, [FromForm] UserDto userDto)
         {
@@ -161,11 +153,11 @@ namespace ALtar_WBS.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); // Trả về thông báo lỗi InvalidOperationException
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Trả về lỗi khác nếu có
+                return BadRequest(ex.Message);
             }
         }
     }

@@ -5,12 +5,12 @@ namespace ALtar_WBS.Interface
 {
 	public interface InterfaceStudent
 	{
-		public Task<Student> AddStudent(StudentDto studentDto, IFormFile profileImage); // Thêm sinh viên
-		public Task<bool> DeleteStudent(int studentId); // Xóa sinh viên
-		public Task<IEnumerable<Student>> GetAllStudents(); // Lấy danh sách sinh viên
-		public Task<Student> GetStudentById(int studentId); // Lấy sinh viên theo ID
-		public Task<bool> StudentExists(int studentId); // Kiểm tra sinh viên có tồn tại
-		public Task<Student> UpdateStudent(int studentId, StudentDto studentDto, IFormFile profileImage); // Cập nhật sinh viên
+		public Task<Student> AddStudent(StudentDto studentDto, IFormFile profileImage);
+		public Task<bool> DeleteStudent(int studentId);
+		public Task<IEnumerable<Student>> GetAllStudents();
+		public Task<Student> GetStudentById(int studentId);
+		public Task<bool> StudentExists(int studentId);
+		public Task<Student> UpdateStudent(int studentId, StudentDto studentDto, IFormFile profileImage);
 
 	}
 }

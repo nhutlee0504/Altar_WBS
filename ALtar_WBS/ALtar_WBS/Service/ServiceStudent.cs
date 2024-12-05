@@ -28,7 +28,7 @@ namespace ALtar_WBS.Service
 
                 if (user.UserID <= 0)
                 {
-                    throw new InvalidOperationException("User ID is invalid or not provided.");
+                    throw new InvalidOperationException("User ID is invalid or not provided");
                 }
                 var userRole = await _context.roles.FindAsync(user.RoleID);
                 if(userRole.RoleName != "Student")
@@ -66,7 +66,7 @@ namespace ALtar_WBS.Service
 
                 if (student == null)
                 {
-                    throw new InvalidOperationException("Student not found.");
+                    throw new InvalidOperationException("Student not found");
                 }
 
                 if (!string.IsNullOrEmpty(student.ProfileImage))
@@ -92,7 +92,7 @@ namespace ALtar_WBS.Service
                 var allStudents = await _context.students.ToListAsync();
                 if (allStudents == null || !allStudents.Any())
                 {
-                    throw new InvalidOperationException("No students found.");
+                    throw new InvalidOperationException("No students found");
                 }
                 return allStudents;
             }
@@ -110,7 +110,7 @@ namespace ALtar_WBS.Service
 
                 if (student == null)
                 {
-                    throw new InvalidOperationException("Student not found.");
+                    throw new InvalidOperationException("Student not found");
                 }
 
                 return student;
@@ -141,7 +141,7 @@ namespace ALtar_WBS.Service
 
                 if (existingStudent == null)
                 {
-                    throw new InvalidOperationException("Student not found.");
+                    throw new InvalidOperationException("Student not found");
                 }
 
                 existingStudent.DateOfBirth = studentDto.DateOfBirth;
@@ -212,7 +212,7 @@ namespace ALtar_WBS.Service
 
             if (string.IsNullOrEmpty(token))
             {
-                throw new ArgumentException("Token is missing or invalid.");
+                throw new ArgumentException("Token is missing or invalid");
             }
 
             var handler = new JwtSecurityTokenHandler();
@@ -220,7 +220,7 @@ namespace ALtar_WBS.Service
 
             if (jwtToken == null)
             {
-                throw new ArgumentException("Invalid JWT token.");
+                throw new ArgumentException("Invalid JWT token");
             }
 
             var userName = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
@@ -231,7 +231,7 @@ namespace ALtar_WBS.Service
 
             if (string.IsNullOrEmpty(userID) || string.IsNullOrEmpty(roleID))
             {
-                throw new ArgumentException("Required claims (UserID or RoleID) are missing from the token.");
+                throw new ArgumentException("Required claims (UserID or RoleID) are missing from the token");
             }
 
             var user = new User
